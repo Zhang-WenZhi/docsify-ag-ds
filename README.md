@@ -1,85 +1,10 @@
-# docsify-ag-ds
-数据结构与算法
 
-#### docsify 创建启动
+* [docsify 介绍](/docsify/guide.md)
 
-```text
-npm 方式：
-npm i docsify-cli -g
-docsify init ./docs
-docsify serve docs
+> docsify 是一个动态生成文档网站的工具。不同于 GitBook、Hexo 之类的工具，它不会生成静态的 `.html` 文件，而是运行一个本地服务器动态生成。
 
-手动建立.html的方式启动：
-cd docs && python -m SimpleHTTPServer 3000 ---- SimpleHTTPServer pypi.org 已经搜不到
-cd docs && python -m http.server 3000 ---- pypi.org 已经搜不到，但是http进入标准库了
-```
+* [VitePress 介绍](/vite-press/guide.md)
 
-#### ci.yml
+> VitePress 是一个基于 Vite 的静态网站生成器。它允许你使用 Vue 组件来构建你的网站，并且支持 Markdown 语法。VitePress 的目标是提供一种快速、简单的方式来创建文档网站。
 
-```shell
-git push --set-upstream origin gh-pages
-```
-
-```text
-name: docsify-ag-ds
-
-on:
-  push:
-    branches:
-      - gh-pages
-  pull_request:
-    branches:
-      - gh-pages
-
-jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12'
-    - name: Install dependencies
-      run: npm ci
-    - name: Build
-      run: npm install && npm build
-    - name: Deploy
-      uses: Zhang-WenZhi/docsify-ag-ds@gh-pages
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: docs/.vuepress/dist # The folder the action should deploy.
-        run: docsify serve docs
-```
-
-#### npm init -y
-
-```json
-{
-  "name": "docsify-ag-ds",
-  "version": "1.0.0",
-  "description": "数据结构与算法",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
-}
-```
-
-#### 合并
-
-```shell
-git checkout main
-git merge gh-pages
-git push --set-upstream origin main
-```
-
+* [算法与数据结构](/data-structure/array.md)
