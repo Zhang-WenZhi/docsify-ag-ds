@@ -15,5 +15,5 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: build
-        BUILD_SCRIPT: npm i docsify-cli -g && docsify serve docs
+        FOLDER: docs
+        BUILD_SCRIPT: npm install && docsify serve docs

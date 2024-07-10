@@ -1,0 +1,19 @@
+{
+  "name": "docsify-ag-ds",
+  "version": "1.0.0",
+  "description": "数据结构与算法",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "dev": "docsify serve docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "docsify": "^4.13.1"
+  }
+}
