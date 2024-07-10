@@ -83,3 +83,28 @@ git merge gh-pages
 git push --set-upstream origin main
 ```
 
+#### 远程关联git仓
+
+```shell
+git remote add origin https://github.com/xxx/docsify-ag-ds.git
+```
+
+#### Github Actions
+
+```shell
+on: push
+
+jobs:
+    job1:
+        runs-on: ubuntu-latest
+        steps:
+        - run: pwd
+        - run: ls
+    job2:
+        runs-on: windows-latest
+        steps:
+        - run: node --version
+```
+
+
+
