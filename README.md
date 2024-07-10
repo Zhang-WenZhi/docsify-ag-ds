@@ -75,4 +75,11 @@ jobs:
 }
 ```
 
+#### 合并
+
+```shell
+git checkout main
+git merge gh-pages
+git push --set-upstream origin main
+```
 
