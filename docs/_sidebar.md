@@ -11,16 +11,16 @@
 
   - [数组](data-structure/array.md)
   - [链表](data-structure/list-node.md)
-  - [哈希表](custom-navbar.md)
-  - [字符串](cover.md)
-  - [栈与队列](cover.md)
-  - [二叉树](cover.md)
+  - [哈希表](data-structure/hash-table.md)
+  - [字符串](data-structure/string.md)
+  - [栈与队列](data-structure/stack-queue.md)
+  - [二叉树](data-structure/binary-tree.md)
 
 - 算法
 
-  - [双指针法](configuration.md)
-  - [回溯算法](themes.md)
-  - [贪心算法](plugins.md)
-  - [动态规划](write-a-plugin.md)
-  - [单调栈](markdown.md)
-  - [图论](language-highlight.md)
+  - [双指针法](algorithm/double-pointer.md)
+  - [回溯算法](algorithm/backtracking.md)
+  - [贪心算法](algorithm/greedy.md)
+  - [动态规划](algorithm/dynamic-programming.md)
+  - [单调栈](algorithm/monotonic-stack.md)
+  - [图论](algorithm/graph-thoery.md)
