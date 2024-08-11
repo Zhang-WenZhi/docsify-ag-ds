@@ -1,5 +1,12 @@
 # Java 八股文面试收集
 
+## spring boot 的装配过程
+
+配置元数据：这是通过Java配置类、XML文件、或者使用@Configuration注解的Java类来定义的。
+
+组件扫描与注册：Spring框架会扫描类路径下的包，并根据注解（如@Component, @Service, @Repository, @Controller）将组件注册到Spring容器中。
+
+依赖注入：Spring容器会管理对象之间的依赖关系，并通过构造器注入、setter方法注入或字段注入来建立依赖关系。
 
 ## 重载(Overloading)  重写(Overriding)
 
