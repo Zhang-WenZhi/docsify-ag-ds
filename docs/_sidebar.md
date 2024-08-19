@@ -33,7 +33,7 @@
   - [java面试收集](collect/java.md)
   - [vue3](collect/vue3.md)
   - [二叉树](collect/tree-node.md)
-  - [牛客网](collect/nowcoder.md)
+  - [牛客网JAVA](collect/nowcoder.md)
   - [前端](collect/front-end.md)
   - [后端](collect/back-end.md)
   - [其他](collect/other.md)
