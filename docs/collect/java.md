@@ -1,5 +1,312 @@
 # Java 八股文面试收集
 
+## PriorityQueue PriorityQueue的优先级排序是怎样的？
+
+PriorityQueue 是一个基于优先堆的无界优先队列。优先队列的元素按照自然顺序排序，也可以通过比较器（Comparator）来指定顺序。优先队列不允许插入 null 元素，也不允许插入不可比较的元素。
+
+PriorityQueue 是一个线程不安全的队列，如果需要在多线程环境下使用，需要手动进行同步。
+
+PriorityQueue 的常用方法包括：
+
+- add(E e)：将指定的元素插入此优先队列。
+- offer(E e)：将指定的元素插入此优先队列（如果可能的话）。
+- remove(Object o)：从此队列中移除指定元素的单个实例（如果存在）。
+- poll()：获取并移除此队列的头部元素，或者如果此队列为空，则返回 null。
+- peek()：获取但不移除此队列的头部元素，或者如果此队列为空，则返回 null。
+- clear()：从此队列中移除所有元素。
+- size()：返回此队列中的元素数量。
+- contains(Object o)：如果此队列包含指定的元素，则返回 true。
+- iterator()：返回在此队列中的元素上进行迭代的迭代器。
+- toArray()：返回一个包含此队列中所有元素的数组。
+
+PriorityQueue 的实现是基于优先堆的，因此它的插入和删除操作的时间复杂度都是 O(log n)。
+
+```java
+import java.util.PriorityQueue;
+
+public class Main {
+    public static void main(String[] args) {
+        PriorityQueue<Integer> priorityQueue = new PriorityQueue<>();
+        priorityQueue.add(5);
+        priorityQueue.add(3);
+        priorityQueue.add(8);
+        priorityQueue.add(1);
+
+        System.out.println("PriorityQueue elements (natural ordering):");
+        while (!priorityQueue.isEmpty()) {
+            System.out.println(priorityQueue.poll());
+        }
+    }
+}
+
+```
+
+```java
+import java.util.PriorityQueue;
+import java.util.Comparator;
+
+public class Main {
+    public static void main(String[] args) {
+        PriorityQueue<String> priorityQueue = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return s2.compareTo(s1); // 反向排序
+            }
+        });
+
+        priorityQueue.add("Apple");
+        priorityQueue.add("Banana");
+        priorityQueue.add("Cherry");
+        priorityQueue.add("Date");
+
+        System.out.println("PriorityQueue elements (custom ordering):");
+        while (!priorityQueue.isEmpty()) {
+            System.out.println(priorityQueue.poll());
+        }
+    }
+}
+
+```
+
+## Deque 和 queue区别
+
+- Deque 是一个双端队列，它允许在队列的两端进行插入和删除操作。而 Queue 是一个单向队列，只允许在一端进行插入和删除操作。
+- Deque 支持在队列的两端进行插入和删除操作，这使得它更加灵活。例如，可以使用 Deque 来实现一个循环队列，其中元素可以从队列的两端添加和删除。
+- Deque 还支持一些额外的操作，例如获取队列的头和尾元素，以及获取队列的大小等。这些操作在 Queue 中是不支持的。
+- Deque 是 Java Collections Framework 的一部分，而 Queue 不是。因此，如果你正在使用 Java Collections Framework，那么你可以使用 Deque 来实现队列的功能。
+
+Deque（双端队列）和Queue（队列）是Java集合框架中的两个接口，它们用于不同的数据结构和操作需求。以下是它们的主要区别：
+
+Queue（队列）
+Queue接口表示一个先进先出（FIFO）的数据结构。元素被添加到队列的末尾，并从队列的前端移除。Queue接口提供了以下主要操作：
+
+add(element): 添加元素到队列的末尾。
+offer(element): 添加元素到队列的末尾，如果队列已满则返回false。
+remove(): 移除并返回队列的前端元素，如果队列为空则抛出异常。
+poll(): 移除并返回队列的前端元素，如果队列为空则返回null。
+element(): 返回队列的前端元素，但不移除，如果队列为空则抛出异常。
+peek(): 返回队列的前端元素，但不移除，如果队列为空则返回null。
+Deque（双端队列）
+Deque接口表示一个双端队列，允许在两端进行插入和移除操作。Deque可以作为队列（FIFO）或栈（LIFO）使用。Deque接口提供了以下主要操作：
+
+addFirst(element): 在队列的前端添加元素。
+addLast(element): 在队列的末尾添加元素。
+offerFirst(element): 在队列的前端添加元素，如果队列已满则返回false。
+offerLast(element): 在队列的末尾添加元素，如果队列已满则返回false。
+removeFirst(): 移除并返回队列的前端元素，如果队列为空则抛出异常。
+removeLast(): 移除并返回队列的末尾元素，如果队列为空则抛出异常。
+pollFirst(): 移除并返回队列的前端元素，如果队列为空则返回null。
+pollLast(): 移除并返回队列的末尾元素，如果队列为空则返回null。
+getFirst(): 返回队列的前端元素，但不移除，如果队列为空则抛出异常。
+getLast(): 返回队列的末尾元素，但不移除，如果队列为空则抛出异常。
+peekFirst(): 返回队列的前端元素，但不移除，如果队列为空则返回null。
+peekLast(): 返回队列的末尾元素，但不移除，如果队列为空则返回null。
+
+总结
+`Queue是先进先出（FIFO）的数据结构。
+Deque是双端队列，允许在两端进行插入和移除操作，可以作为队列（FIFO）或栈（LIFO）使用。`
+选择使用哪一个取决于你的具体需求：如果你只需要一个简单的先进先出队列，Queue就足够了；如果你需要在两端进行插入和移除操作，或者需要使用栈的功能，Deque会更合适。
+
+## Deque 和 Queue除了用LinkedList实现，还能用什么实现
+
+除了LinkedList，Deque和Queue还可以使用其他数据结构来实现，例如：
+
+ArrayDeque：这是一个基于数组的双端队列实现，它提供了快速的插入和删除操作，但它的容量是固定的，不能动态扩展。
+
+PriorityQueue：这是一个基于优先级堆的双端队列实现，它按照元素的优先级进行排序，优先级最高的元素位于队列的前端。
+
+ConcurrentLinkedDeque：这是一个线程安全的双端队列实现，它使用CAS操作来保证线程安全，适用于多线程环境。
+
+ConcurrentLinkedQueue：这是一个线程安全的队列实现，它使用CAS操作来保证线程安全，适用于多线程环境。
+
+在Java中，Deque和Queue接口可以通过多种数据结构来实现。除了LinkedList，还有其他几个常用的实现类。以下是一些常见的实现方式：
+
+Queue的实现类
+LinkedList:
+
+这是一个双向链表，实现了Queue接口。
+示例：
+Queue<String> queue = new LinkedList<>();
+
+PriorityQueue:
+
+这是一个优先队列，元素按照优先级顺序进行排序。
+示例：
+Queue<String> queue = new PriorityQueue<>();
+
+ArrayDeque:
+
+这是一个基于数组的双端队列，可以作为Queue使用。
+示例：
+Queue<String> queue = new ArrayDeque<>();
+
+Deque的实现类
+LinkedList:
+
+这是一个双向链表，实现了Deque接口。
+示例：
+Deque<String> deque = new LinkedList<>();
+
+ArrayDeque:
+
+这是一个基于数组的双端队列，实现了Deque接口。
+示例：
+Deque<String> deque = new ArrayDeque<>();
+
+总结
+`Queue接口可以通过LinkedList、PriorityQueue和ArrayDeque实现。
+Deque接口可以通过LinkedList和ArrayDeque实现。`
+选择使用哪一个实现类取决于你的具体需求：如果你需要一个简单的队列，LinkedList或ArrayDeque可能就足够了；如果你需要元素按优先级排序，PriorityQueue会更合适。对于双端队列，LinkedList和ArrayDeque都是很好的选择。
+
+## LinkedList、PriorityQueue和ArrayDeque 区别
+
+LinkedList、PriorityQueue和ArrayDeque都是Java中常用的数据结构，它们都有各自的特点和适用场景。以下是它们之间的主要区别：
+
+LinkedList：
+- 实现了List接口，因此可以存储重复的元素。
+- 底层使用双向链表实现，因此插入和删除操作的时间复杂度为O(1)。
+- 可以在任意位置插入或删除元素，因此适用于需要频繁插入和删除操作的场景。
+- 不保证元素的顺序，因此不适用于需要按顺序访问元素的场景。
+
+PriorityQueue：
+- 实现了Queue接口，因此只能存储唯一的元素。
+- 底层使用堆实现，因此插入和删除操作的时间复杂度为O(log n)。
+- 元素按照优先级顺序进行排序，因此适用于需要按优先级访问元素的场景。
+- 不保证元素的顺序，因此不适用于需要按顺序访问元素的场景。
+
+ArrayDeque：
+- 实现了Deque接口，因此可以存储重复的元素。
+- 底层使用数组实现，因此插入和删除操作的时间复杂度为O(1)。
+- 可以在任意位置插入或删除元素，因此适用于需要频繁插入和删除操作的场景。
+- 不保证元素的顺序，因此不适用于需要按顺序访问元素的场景。
+
+总结
+- 如果你需要一个简单的队列，LinkedList或ArrayDeque可能就足够了。
+- 如果你需要元素按优先级排序，PriorityQueue会更合适。
+- 对于双端队列，LinkedList和ArrayDeque都是很好的选择。
+
+LinkedList、PriorityQueue和ArrayDeque是Java集合框架中的不同实现类，它们各自有不同的特性和用途。以下是它们的主要区别：
+
+LinkedList
+LinkedList是一个双向链表，实现了List和Deque接口。它允许在列表的任意位置进行高效的插入和删除操作，但在随机访问元素时性能较差。
+
+特点
+插入和删除高效：由于是链表结构，插入和删除操作在任意位置都是常数时间复杂度O(1)。
+随机访问较慢：访问特定位置的元素需要遍历链表，时间复杂度为O(n)。
+允许null元素：可以存储null值。
+线程不安全：不是线程安全的，如果需要线程安全的实现，可以使用Collections.synchronizedList。
+
+PriorityQueue
+PriorityQueue是一个优先队列，实现了Queue接口。元素按照优先级顺序进行排序，默认情况下是最小堆（即最小的元素优先级最高）。
+
+特点
+优先级排序：元素按照优先级顺序进行排序，默认是最小堆。
+不允许null元素：不能存储null值。
+线程不安全：不是线程安全的，如果需要线程安全的实现，可以使用PriorityBlockingQueue。
+不保证迭代顺序：迭代器遍历时不保证任何特定的顺序。
+
+ArrayDeque
+ArrayDeque是一个基于数组实现的双端队列，实现了Deque接口。它提供了高效的插入和删除操作，特别是在两端。
+
+特点
+高效的插入和删除：在两端的插入和删除操作都是常数时间复杂度O(1)。
+不允许null元素：不能存储null值。
+线程不安全：不是线程安全的，如果需要线程安全的实现，可以使用Collections.synchronizedDeque。
+动态扩展：内部数组可以动态扩展，但扩展操作可能会影响性能。
+
+
+总结
+`LinkedList：适用于需要频繁插入和删除操作的场景，特别是在列表的任意位置。
+PriorityQueue：适用于需要按优先级排序的场景，例如任务调度。
+ArrayDeque：适用于需要在两端进行高效插入和删除操作的场景，例如实现栈或队列。`
+选择使用哪一个实现类取决于你的具体需求：如果你需要一个简单的链表结构，LinkedList可能更合适；如果你需要按优先级排序的队列，PriorityQueue会更合适；如果你需要在两端进行高效的插入和删除操作，ArrayDeque会更合适。
+
+## LinkedArrayList 和 ArrayList用法
+
+LinkedArrayList并不是Java标准库中的一个类。你可能想要了解的是LinkedList和ArrayList的用法。这两个类都是Java集合框架中的部分，用于存储和操作对象的集合。
+
+ArrayList
+ArrayList是一个动态数组，实现了List接口。它允许存储所有类型的对象，包括null。ArrayList的元素可以随机访问，因为它的内部实现是基于数组的。
+
+
+LinkedList
+LinkedList是一个双向链表，实现了List和Deque接口。它允许存储所有类型的对象，包括null。LinkedList在插入和删除元素时比ArrayList更高效，但在随机访问元素时较慢。
+
+如果你需要频繁地插入和删除元素，LinkedList可能更合适；如果你主要需要随机访问元素，ArrayList可能更合适。
+
+## LinkedHashMap的用法
+
+LinkedHashMap是Java中的一个集合类，继承自HashMap，但它保留了插入顺序。这意味着当你遍历LinkedHashMap时，元素的顺序将与它们被插入的顺序相同。这与普通的HashMap不同，HashMap不保证任何特定的迭代顺序。
+
+```java
+import java.util.LinkedHashMap;
+
+public class Main {
+    public static void main(String[] args) {
+        LinkedHashMap<String, Integer> data = new LinkedHashMap<>();
+
+        // 添加元素
+        data.put("key1", 1);
+        data.put("key2", 2);
+        data.put("key3", 3);
+
+        // 遍历元素
+        for (String key : data.keySet()) {
+            System.out.println(key + " : " + data.get(key));
+        }
+
+        // 获取元素
+        int value = data.get("key1");
+        System.out.println("Value of key1: " + value);
+
+        // 删除元素
+        data.remove("key1");
+
+        // 检查是否包含某个键
+        boolean containsKey = data.containsKey("key1");
+        System.out.println("Contains key1: " + containsKey);
+
+        // 获取大小
+        int size = data.size();
+        System.out.println("Size of data: " + size);
+
+        // 清空LinkedHashMap
+        data.clear();
+        System.out.println("Size of data after clear: " + data.size());
+    }
+}
+
+```
+
+## indexOf() 和 lastIndexOf()
+
+```java
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("apple");
+        list.add("banana");
+        list.add("apple");
+        list.add("orange");
+        list.add("apple");
+
+        // 查找元素 "apple" 的第一个索引
+        int firstIndex = list.indexOf("apple");
+        System.out.println("First index of 'apple': " + firstIndex);
+
+        // 查找元素 "apple" 的最后一个索引
+        int lastIndex = list.lastIndexOf("apple");
+        System.out.println("Last index of 'apple': " + lastIndex);
+    }
+}
+```
+
+在Java中，String.indexOf(char ch)方法是从字符串的开头开始查找指定字符的第一个出现位置。因此，line.indexOf('\\')是从字符串的开头开始查找第一个反斜杠（\）的位置，而不是从最后一个反斜杠开始查找。
+
+如果你需要从字符串的末尾开始查找，可以使用String.lastIndexOf(char ch)方法。
+
 ## spring boot 的装配过程
 
 配置元数据：这是通过Java配置类、XML文件、或者使用@Configuration注解的Java类来定义的。
@@ -1371,4 +1678,191 @@ Hystrix的主要功能包括：
 1. 断路器：Hystrix可以监控服务的健康状态，如果服务出现故障，它会自动打开断路器，阻止请求继续发送到故障服务，从而保护系统的稳定运行。
 
 
+## Redis
 
+Redis是一个高性能的键值存储数据库，它支持多种数据类型，如字符串、哈希、列表、集合、有序集合等。Redis的性能非常高，读写速度可以达到10万次/秒，非常适合用于缓存、会话管理等场景。
+
+Redis的安装和配置非常简单，只需要下载Redis的源代码，编译并安装即可。在配置文件中，可以设置Redis的监听地址、端口号、密码等参数。
+
+`redis的常用命令包括：`
+1. SET：设置键值对。
+2. GET：获取键对应的值。
+3. DEL：删除键值对。
+4. EXPIRE：设置键的过期时间。
+5. HSET：设置哈希表中的字段值。
+6. HGET：获取哈希表中的字段值。
+7. LPUSH：将元素插入列表的头部。
+8. LPOP：从列表的头部移除元素。
+9. SADD：将元素添加到集合中。
+10. SPOP：从集合中移除元素。
+
+`redis的常用数据类型包括：`
+1. 字符串：用于存储简单的键值对。
+2. 哈希表：用于存储字段和值对。
+3. 列表：用于存储有序的元素列表。
+4. 集合：用于存储无序的元素集合。
+5. 有序集合：用于存储有序的元素集合，每个元素都有一个分数，用于排序。
+
+`redis的常用应用场景包括：`
+1. 缓存：将频繁访问的数据存储在Redis中，以提高系统的性能。
+2. 会话管理：将用户的会话信息存储在Redis中，以实现分布式会话管理。
+3. 消息队列：使用Redis的列表数据类型实现消息队列，以实现异步处理。
+4. 分布式锁：使用Redis的SETNX命令实现分布式锁，以实现并发控制。
+5. 排行榜：使用Redis的有序集合数据类型实现排行榜，以实现实时排名。
+
+`redis的常用配置参数包括：`
+1. 监听地址：指定Redis监听的IP地址。
+2. 端口号：指定Redis监听的端口号。
+3. 密码：指定访问Redis的密码。
+4. 最大连接数：指定Redis的最大连接数。
+5. 最大内存：指定Redis的最大内存。
+6. 数据持久化：指定Redis的数据持久化方式，如RDB或AOF。
+7. 主从复制：指定Redis的主从复制配置，以实现数据同步。
+
+`redis的常用监控指标包括`：
+1. 连接数：监控Redis的连接数，以判断系统的负载情况。
+2. 内存使用量：监控Redis的内存使用量，以判断系统的内存使用情况。
+3. 命令执行时间：监控Redis命令的执行时间，以判断系统的性能情况。
+4. 错误数：监控Redis的错误数，以判断系统的稳定性情况。
+5. 持久化状态：监控Redis的数据持久化状态，以判断系统的数据安全性情况。
+
+`redis的常用优化方法包括：`
+1. 使用连接池：使用连接池可以减少Redis的连接开销，提高系统的性能。
+2. 使用Pipeline：使用Pipeline可以减少网络传输的开销，提高系统的性能。
+3. 使用压缩：使用压缩可以减少Redis的数据存储量，提高系统的性能。
+4. 使用分布式：使用分布式可以将Redis的数据分散到多个节点上，提高系统的性能和可靠性。
+5. 使用缓存预热：使用缓存预热可以提前加载常用的数据到缓存中，提高系统的性能。
+
+`redis的常用故障排查方法包括：`
+1. 查看Redis的日志文件：Redis的日志文件中记录了Redis的运行状态和错误信息，可以用来排查问题。
+2. 使用Redis的INFO命令：Redis的INFO命令可以提供Redis的运行状态和性能指标，可以用来排查问题。
+3. 使用Redis的MONITOR命令：Redis的MONITOR命令可以实时监控Redis的命令执行情况，可以用来排查问题。
+4. 使用Redis的DEBUG命令：Redis的DEBUG命令可以提供Redis的调试信息，可以用来排查问题。
+
+### `redis持久化方法`
+1. RDB持久化：RDB持久化是将Redis的数据以二进制的形式保存到磁盘上，可以在Redis重启时恢复数据。
+2. AOF持久化：AOF持久化是将Redis的命令以文本的形式保存到磁盘上，可以在Redis重启时恢复数据。
+3. 混合持久化：混合持久化是将RDB持久化和AOF持久化结合使用，可以在Redis重启时恢复数据。
+
+`redis的常用数据类型包括：`
+1. 字符串：字符串是最基本的数据类型，可以用来存储文本、数字、二进制数据等。
+2. 列表：列表是一种有序的数据类型，可以用来存储多个元素。
+3. 集合：集合是一种无序的数据类型，可以用来存储多个不重复的元素。
+4. 哈希：哈希是一种键值对的数据类型，可以用来存储多个键值对。
+5. 有序集合：有序集合是一种有序的数据类型，可以用来存储多个元素，并按照元素的分数进行排序。
+
+## 抽象类和接口有啥区别
+
+`抽象类和接口的区别主要有以下几点：`
+1. 抽象类可以包含抽象方法和非抽象方法(即方法体的方法，jdk8以前，)，而接口只能包含抽象方法。
+2. 抽象类可以包含成员变量，而接口不能包含成员变量。
+3. 抽象类可以继承其他类，而接口可以继承其他接口。
+4. 抽象类可以包含构造方法，而接口不能包含构造方法。
+5. 抽象类可以包含静态方法，而接口不能包含静态方法。
+6. 抽象类可以包含私有方法，而接口不能包含私有方法。
+
+7.接口的成员变量隐士为static final，但抽象类不是的。
+
+8.一个类可以实现多个接口，但只能继承一个抽象类。
+
+## java的集合框架
+`java的集合框架主要包括以下几种：`
+1. List：List是一个有序的集合，可以存储重复的元素，常用的实现类有ArrayList、LinkedList等。
+2. Set：Set是一个无序的集合，不能存储重复的元素，常用的实现类有HashSet、TreeSet等。
+3. Map：Map是一个键值对的集合，键和值都可以是任意类型，常用的实现类有HashMap、TreeMap等。
+4. Queue：Queue是一个队列，可以存储多个元素，常用的实现类有LinkedList、PriorityQueue等。
+5. Deque：Deque是一个双端队列，可以存储多个元素，常用的实现类有LinkedList、ArrayDeque等。
+
+
+## JDK 各版本新特性
+
+`JDK 各版本新特性主要包括以下几方面：`
+1. JDK 5：引入了泛型、枚举、自动装箱/拆箱、for-each循环、静态导入、可变参数、注解等新特性。
+2. JDK 6：引入了动态语言支持、编译器API、JDBC 4.0、Java Compiler API、JVM监控和故障排除工具等新特性。
+3. JDK 7：引入了NIO.2、字符串连接池、钻石操作符、try-with-resources、多注解、增强的泛型推断等新特性。
+4. JDK 8：引入了Lambda表达式、函数式接口、方法引用、默认方法、Stream API、Optional类、新的日期和时间API等新特性。
+5. JDK 9：引入了模块化系统、JShell、集合工厂方法、接口私有方法、增强的try-with-resources等新特性。
+6. JDK 10：引入了局部变量类型推断、垃圾收集器接口、新的垃圾收集器G1、增强的G1垃圾收集器等新特性。
+7. JDK 11：引入了新的垃圾收集器ZGC、Epsilon垃圾收集器、新的字符串方法、增强的NullPointerException等新特性。
+8. JDK 12：引入了Switch表达式、增强的NullPointerException、新的垃圾收集器Shenandoah等新特性。
+9. JDK 13：引入了文本块、增强的NullPointerException、新的垃圾收集器ZGC等新特性。
+
+
+## 实现线程和线程池的方法及其要传的参数？
+
+https://blog.csdn.net/PassionAnytime/article/details/126143524
+
+实现多线程的四种方式：
+继承 Thread 类
+实现 Runnable 接口
+实现 Callable 接口
+线程池
+
+
+## Java通过java.util.concurrent包提供了多种线程池的实现，其中最为常用的是ExecutorService接口及其实现类。
+
+
+
+2.1 Executors工厂类
+Executors工厂类提供了多种创建线程池的静态方法，如：
+
+newFixedThreadPool(int nThreads)：创建一个固定大小的线程池。
+newCachedThreadPool()：创建一个可缓存的线程池，如果线程池大小超过了处理任务所需要的线程，就会回收部分空闲线程。
+newSingleThreadExecutor()：创建一个单线程的线程池，该线程池中的线程以顺序方式执行所有任务。
+newScheduledThreadPool(int corePoolSize)：创建一个支持定时及周期性执行任务的线程池。
+
+Executors.newWorkStealingPool()
+创建一个拥有多个任务队列的线程池，可以减少连接数，创建当前可用cpu数量的线程来并行执行，适用于大耗时的操作，可以并行来执行
+线程池核心的参数：
+一、corePoolSize 线程池核心线程大小
+二、maximumPoolSize 线程池最大线程数量
+三、keepAliveTime 空闲线程存活时间
+四、unit 空闲线程存活时间单位
+五、workQueue 工作队列
+六、threadFactory 线程工厂
+七、handler 拒绝策略
+
+2.2 线程池的配置
+在创建线程池时，需要合理配置核心线程数、最大线程数、任务队列容量、线程存活时间等参数，以满足应用的需求。
+三、线程池的使用
+3.1 提交任务
+通过ExecutorService的submit方法提交任务，该方法会返回一个Future对象，用于获取任务执行的结果。
+
+3.2 关闭线程池
+任务执行完毕后，应关闭线程池以释放资源。可以通过调用shutdown或shutdownNow方法来关闭线程池。
+
+shutdown：平滑关闭线程池，不再接受新任务，但会等待已提交的任务执行完毕。
+shutdownNow：尝试立即关闭线程池，不再接受新任务，并尝试停止正在执行的任务。
+
+相比于继承 Thread 类的方法来说，实现 Runnable 接口是一个更好地选择，因为 Java 不支持多继承，但是可以实现多个接口。
+从源码我们可以看到 Callable 接口和 Runnable 接口类似，它们之间的区别在于 run() 方法没有返回值，而 call() 方法是有返回值的。
+
+## 中间件，幂相等？
+1、什么是消息的幂等性
+幂等：在编程中一个幂等操作的特点是其任意多次执行所产生的影响均与一次执行的影响相同。这是百度百科给出的幂等的概念。
+消息的幂等性：就是即使多次收到了消息，也不会重复消费。所以保证消息的幂等性就是保证消息不会重复消费，这在开发中是很重要的。比如客户点击付款，如果点击了多次，那也只能扣一次费。
+2.1 MQ出现非幂等性的情况
+2.1.1 生成者重复发送消息给MQ
+生成者把消息发送给MQ之后，MQ收到消息在给生产者返回ack的时候，网络中断了。这时MQ明明已经接收到了消息，但是生产者没接收到确定消息，就会认为MQ没有接收到消息。因此，在网络重新连接后，生产者会把已经发送的消息再次发送到MQ，如果MQ没有去重措施的话，那么就接收到了重复的消息。
+2.1.2 MQ重复发送消息给消费者
+消费者从MQ中拉取消息进行消费，当消费者已经消费了消息但还没向MQ返回ack的时候，消费者宕机或者网络断开了。所以消费者成功消费了消息的情况，MQ并不知道。当消费者重启或网络重连后，消费者再次去请求MQ拉取消息的时候，MQ会把已经消费的消息再次发送给消费者，如果消费者没有去重就直接消费，那么就会造成重复消费的情况。便会造成数据的不一致。
+
+2.2 保证消息幂等性的办法
+2.2.1 生成者不重复发送消息到MQ
+mq内部可以为每条消息生成一个全局唯一、与业务无关的消息id，当mq接收到消息时，会先根据该id判断消息是否重复发送，mq再决定是否接收该消息。
+
+2.2.2 消费者不重复消费
+消费者怎么保证不重复消费的关键在于消费者端做控制，因为MQ不能保证不重复发送消息，所以应该在消费者端控制：即使MQ重复发送了消息，消费者拿到了消息之后，要判断是否已经消费过，如果已经消费，直接丢弃。所以根据实际业务情况，有下面几种方式：
+1、如果从MQ拿到数据是要存到数据库，那么可以根据数据创建唯一约束，这样的话，同样的数据从MQ发送过来之后，当插入数据库的时候，会报违反唯一约束，不会插入成功的。（或者可以先查一次，是否在数据库中已经保存了，如果能查到，那就直接丢弃就好了）。
+2、让生产者发送消息时，每条消息加一个全局的唯一id，然后消费时，将该id保存到redis里面。消费时先去redis里面查一下有么有，没有再消费。（其实原理跟第一点差不多）。
+3、如果拿到的数据是直接放到redis的set中的话，那就不用考虑了，因为set集合就是自动有去重的。
+
+
+## 编程基础四大件 和 应用实践编程
+
+服务端开发、嵌入式开发
+
+基础四大件：数据结构和算法、计算机网络、操作系统、设计模式
+应用实践编程：Linux操作系统（shell编程）、编译和调试、Linux系统API、多线程编程、网络编程等等
+
+C语言和C++的学习路线了，内容大致包括：岗位分析、语言学习、数据结构和算法、计算机网络（TCP/IP协议栈->ARP协议、IP协议、ICMP协议、TCP/UDP协议、DNS协议、HTTP/HTTPS协议）、操作系统（进程/线程->并发/多线程、原子性、锁、内存/内存调度算法）、设计模式（23，常见的单例、工厂、代理、策略、模板方法）、Linux操作系统（shell编程）、编译和调试（gcc、gdb、makefile），Linux系统API，多线程编程，网络编程等等
