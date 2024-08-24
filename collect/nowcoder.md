@@ -1,4 +1,56 @@
-# https://www.nowcoder.com/ta/huawei
+## https://www.nowcoder.com/ta/huawei
+
+## 面试笔刷101: https://www.nowcoder.com/exam/oj
+
+请参考帖子https://www.nowcoder.com/discuss/276处理循环输入的问题
+
+## Java 处理多行输入 while ((line = reader.readLine()) != null && !line.isEmpty()) JDK 17
+
+```java
+import java.util.Scanner;
+
+public class MultiLineInput {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入多行文本，以空行结束：");
+
+        String line;
+        while ((line = scanner.nextLine()) != null && !line.isEmpty()) {
+            System.out.println("你输入的行是：" + line);
+        }
+
+        scanner.close();
+    }
+}
+```
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class MultiLineInput {
+    public static void main(String[] args) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("请输入多行文本，以空行结束：");
+
+        String line;
+        try {
+            while ((line = reader.readLine()) != null && !line.isEmpty()) {
+                System.out.println("你输入的行是：" + line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
 
 ## 1、字符串最后一个单词的长度 (简单) InputStream
 
@@ -546,5 +598,141 @@ public class Main {
     }
 }
 ```
+
+## 18、识别有效的IP地址和掩码并进行分类统计（较难） trans ？？
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = null;
+        int a = 0, b = 0, c = 0, d = 0, e = 0, pir = 0, err = 0;
+        while ((str = br.readLine()) != null && !str.isEmpty()) {
+            int index = str.indexOf('~');
+            long num1 = trans(str.substring(0, index));
+            long num2 = trans(str.substring(index + 1));
+            long t = num1 >> 24;
+            if (t == 0 || t == 127) continue;
+            if (t < 0) {
+                err++;
+                continue;
+            }
+            if (num2 <= 0 || num2 >= 0XFFFFFFFFL ||
+                    (((num2 ^ 0XFFFFFFFFL) + 1) | num2) != num2) {
+                err++;
+                continue;
+            }
+            if (t >= 1 && t <= 126) {
+                a++;
+                if (t == 10)
+                    pir++;
+            } else if (t >= 128 && t <= 191) {
+                b++;
+                if (num1 >> 20 == 0xAC1)
+                    pir++;
+            } else if (t >= 192 && t <= 223) {
+                c++;
+                if (num1 >> 16 == 0xC0A8)
+                    pir++;
+            } else if (t >= 224 && t <= 239)
+                d++;
+            else if (t >= 240 && t <= 255)
+                e++;
+        }
+        System.out.println(a + " " + b + " " + c + " " + d + " " + e + " " + err + " " +
+                pir);
+    }
+
+    public static long trans(String str) {
+        char[] cs = str.toCharArray();
+        long res = 0, tmp = 0, flag = 0;
+        for (char c : cs) {
+            if (c == '.') {
+                res = res << 8 | tmp;
+                tmp = 0;
+                flag++;
+            } else if (c >= '0' && c <= '9') {
+                tmp = tmp * 10 + c - '0';
+                flag = 0;
+            } else {
+                return -1;
+            }
+            if (flag >= 2) return -1;
+
+        }
+        res = res << 8 | tmp;
+        return res;
+    }
+}
+```
+
+## 19、简单错误记录（较难）
+
+```java
+// 这个不对，不知道哪儿写错了？？
+//import java.io.BufferedReader;
+//import java.io.IOException;
+//import java.io.InputStreamReader;
+//import java.util.LinkedHashMap;
+//
+//public class Main {
+//    public static void main(String[] args) {
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//        LinkedHashMap<String, Integer> data = new LinkedHashMap<>();
+//        String line;
+//
+//        try {
+//
+//            while ((line = br.readLine() )!= null && !line.isEmpty())  {
+//                int idx1 = line.indexOf(' ');
+//                int idx2 = line.indexOf('\\');
+//                // int idx1 = line.indexOf(" ");
+//                // int idx2 = line.indexOf("\\");
+//                String key = (idx1 - idx2) > 16 ? line.substring(idx1-16) : line.substring(idx2+1);
+//                data.put(key, data.getOrDefault(key, 0) + 1);
+//            }
+//            int count = 0;
+//            for (String key : data.keySet()) {
+//                count++;
+//                if (count > (data.size() - 8)) {
+//                    System.out.println(key + " " + data.get(key));
+//                }
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//}
+
+
+import java.io.*;
+import java.util.*;
+public class Main{
+    public static void main(String [] args) throws IOException{
+        BufferedReader buffer = new BufferedReader(new InputStreamReader(System.in));
+        String str;
+        LinkedHashMap<String,Integer> data = new LinkedHashMap<String,Integer>();
+        while((str = buffer.readLine())!=null && !str.isEmpty()){
+            int idx1 = str.lastIndexOf(" ");
+            int idx2 = str.lastIndexOf("\\");
+            String key = (idx1-idx2)>16?str.substring(idx1-16):str.substring(idx2+1);
+            data.put(key,data.getOrDefault(key,0)+1);
+        }
+        int count=0;
+        for (String key:data.keySet()){
+            count++;
+            if(count>(data.size()-8)){
+                System.out.println(key+" "+data.get(key));
+            }
+        }
+    }
+}
+```
+
+## 20、密码验证合格程序（中等）
 
 
