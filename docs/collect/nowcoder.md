@@ -735,4 +735,1030 @@ public class Main{
 
 ## 20、密码验证合格程序（中等）
 
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String input = null;
+        StringBuilder sb = new StringBuilder();
+        while(null != (input = reader.readLine()) && !input.isEmpty()) {
+            boolean[] flag = new boolean[4];
+            char[] chars = input.toCharArray();
+
+            if (chars.length < 9) {
+                sb.append("NG").append("\n");
+                continue;
+            }
+
+            for (char c : chars) {
+                if ('A' <= c && c <= 'Z') {
+                    flag[0] = true;
+                } else if ('a' <= c && c <= 'z') {
+                    flag[1] = true;
+                } else if ('0' <= c && c <= '9') {
+                    flag[2] = true;
+                } else {
+                    flag[3] = true;
+                }
+            }
+            int count = 0;
+            for (int i=0; i<4; i++) {
+                if (flag[i]) {
+                    count++;
+                }
+            }
+
+            boolean sign = true;
+            for (int i=0; i<chars.length-5; i++) {
+                for (int j=i+3; j<chars.length-2; j++) {
+                    if (chars[i] == chars[j] && chars[i + 1] == chars[j + 1] && chars[i + 2] == chars[j + 2]) {
+                        sign = false;
+                        break;
+                    }
+                }
+            }
+            if (count >= 3 && sign) {
+                sb.append("OK").append("\n");
+            } else {
+                sb.append("NG").append("\n");
+            }
+        }
+        System.out.println(sb.toString());
+    }
+}
+
+```
+
+## 21、简单密码（简单）
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        // 一次读取
+        String str = reader.readLine();
+        StringBuffer sb = new StringBuffer();
+        for (int i=0; i<str.length(); i++) {
+            char c = str.charAt(i);
+            if (c >= 'A' && c <'Z') {
+                // 转换为小写字母 差值32='b' - 'A'
+                c = (char)(c + 'b' - 'A');
+            } else if (c == 'Z') {
+                c = 'a';
+            } else if (c >= 'a' && c <= 'c') {
+                c = '2';
+            } else if (c >= 'd' && c <= 'f') {
+                c = '3';
+            } else if (c >= 'g' && c <= 'i') {
+                c = '4';
+            } else if (c >= 'j' && c <= 'l') {
+                c = '5';
+            } else if (c >= 'm' && c <= 'o') {
+                c = '6';
+            } else if (c >= 'p' && c <= 's') {
+                c = '7';
+            } else if (c >= 't' && c <= 'v') {
+                c = '8';
+            } else if (c >= 'w' && c <= 'z') {
+                c = '9';
+            }
+            sb.append(c);
+
+        }
+        System.out.println(sb.toString().trim());
+    }
+}
+
+```
+
+## 22、汽水瓶（简单）
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String str = null;
+        while ((str = reader.readLine()) != null) {
+            int g = Integer.parseInt(str);
+            if (g == 0) {
+                return;
+            }
+            int count = 0;
+            // Condition 'g != 0' is always 'true' 
+            // while (g != 0) {
+            //     int f = g / 3;
+            //     count += f;
+            //      g = g % 3 + f;
+            //     if (g < 3) {
+            //         break;
+            //     }
+            // }
+            do {
+                int f = g / 3;
+                count += f;
+                g = g % 3 + f;
+            } while (g >= 3);
+            if (g == 2) {
+                count += 1;
+            }
+            System.out.println(count);
+        }
+    }
+}
+
+```
+
+## 23、删除字符串中出现次数最少的字符（简单）
+
+自己：
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String str = null;
+        while ((str = reader.readLine()) != null) {
+            LinkedHashMap<Character, Integer> map = new LinkedHashMap<>();
+            for (int i =0; i<str.length(); i++) {
+                char c = str.charAt(i);
+                map.put(c, map.getOrDefault(c, 0) + 1);
+            }
+            Map.Entry<Character, Integer> minEntry = null;
+            for (Map.Entry<Character, Integer> entry: map.entrySet()) {
+                if (minEntry == null || entry.getValue() < minEntry.getValue()) {
+                    minEntry = entry;
+                }
+            }
+            // System.out.println("map: " + map.toString().trim());
+
+            StringBuilder sb = new StringBuilder();
+            // for (Map.Entry<Character, Integer> entry: map.entrySet()) {
+            //     // if (minEntry != null && entry.getValue() != minEntry.getValue())
+            //     if (minEntry != null && !Objects.equals(entry.getValue(), minEntry.getValue())) {
+            //         sb.append(entry.getKey());
+            //     }
+            // }
+            for (char c: str.toCharArray()) {
+                if (minEntry != null && c != minEntry.getKey() && !Objects.equals(map.get(c), minEntry.getValue())) {
+                    sb.append(c);
+                }
+            }
+            System.out.println(sb.toString().trim());
+
+        }
+    }
+}
+```
+
+排第一的：
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String input;
+        while((input = reader.readLine())!= null) {
+            char[] ch = input.toCharArray();
+            int[] count = new int[ch.length];
+            int[] newCount = new int[ch.length];
+            for (int i=0; i<ch.length-1; i++) {
+                for (int j=i+1; j<ch.length; j++) {
+                    if (ch[i] == ch[j]) {
+                        count[i]++;
+                        count[j]++;
+                    }
+                }
+            }
+            // for (int i=0; i<newCount.length; i++) {
+            //     newCount[i] = count[i];
+            // }
+            System.arraycopy(count, 0, newCount, 0, newCount.length);
+            Arrays.sort(count);
+            for (int i=0; i<ch.length; i++) {
+                if (newCount[i] > count[0]) {
+                    System.out.print(ch[i]);
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+
+```
+
+第二的：while(s!=null && s.length()!=0) { 操作; s = br.readLine(); }
+```java
+import java.io.*;
+import java.util.*;
+
+public class Main{
+    
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String s = br.readLine();
+        while(s!=null && s.length()!=0){
+            System.out.println(updateString(s));
+            s = br.readLine();
+        }
+    }
+    public static String updateString(String s){
+        char[] charArray = s.toCharArray();
+        int[] count = new int[26];
+        for(char c: charArray){
+            count[c-'a']++;
+            
+        }
+        int min = 20;
+        for(int i: count){
+            if(i >0 && i<min)min=i;
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for(char c : charArray){
+            if(count[c-'a']!=min)sb.append(c);
+        }
+        return sb.toString();
+        
+        
+    }
+}
+```
+
+## 24、合唱队（中等）【再刷】
+
+```java
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = null;
+        while ((str = br.readLine()) != null) {
+            if (str.equals("")) continue;
+            int n = Integer.parseInt(str);
+            int[] heights = new int[n];
+            String[] str_heights = br.readLine().split(" ");
+            // 当仅有一个人时，其自己组成一个合唱队，出列0人
+            if (n <= 1) System.out.println(0);
+            else {
+                for (int i = 0; i < n; i++) heights[i] = Integer.parseInt(str_heights[i]);
+                // 记录从左向右的最长递增子序列和从右向左的最长递增子序列
+                int[] seq = new int[n], rev_seq = new int[n];
+                int[] k = new int[n];  // 用于记录以i为终点的从左向右和从右向走的子序列元素个数
+                seq[0] = heights[0];  // 初始化从左向右子序列首元素为第一个元素
+                int index = 1; // 记录当前子序列的长度
+                for (int i = 1; i < n; i++) {
+                    if (heights[i] > seq[index-1]) {  // 当当前元素大于递增序列最后一个元素时
+                        k[i] = index;  // 其左边元素个数
+                        seq[index++] = heights[i];  // 更新递增序列
+                    } else {  // 当当前元素位于目前维护递增序列之间时
+                        // 使用二分搜索找到其所属位置
+                        int l = 0, r = index - 1;
+                        while (l < r) {
+                            int mid = l + (r - l) / 2;
+                            if (seq[mid] < heights[i]) l = mid + 1;
+                            else r = mid;
+                        }
+                        seq[l] = heights[i];  // 将所属位置值进行替换
+                        k[i] = l;  // 其左边元素个数
+                    }
+                }
+
+                // 随后，再从右向左进行上述操作
+                rev_seq[0] = heights[n-1];
+                index = 1;
+                for (int i = n - 2; i >= 0; i--) {
+                    if (heights[i] > rev_seq[index-1]) {
+                        k[i] += index;
+                        rev_seq[index++] = heights[i];
+                    } else {
+                        int l = 0, r = index - 1;
+                        while (l < r) {
+                            int mid = l + (r - l) / 2;
+                            if (rev_seq[mid] < heights[i]) l = mid + 1;
+                            else r = mid;
+                        }
+                        rev_seq[l] = heights[i];
+                        k[i] += l;
+                    }
+                }
+
+                int max = 1;
+                for (int num: k)
+                    if (max < num) max = num;
+                // max+1为最大的k
+                System.out.println(n - max - 1);
+            }
+        }
+    }
+}
+
+```
+
+## 25、数据分类处理（困难）【题没怎么读懂，再刷】
+
+```java
+/*
+import java.util.*;
+public class Main{
+    public static void main(String[] a){
+        Scanner s = new Scanner(System.in);
+        while(s.hasNext()){
+            String s1 = s.nextLine();
+            String s2 = s.nextLine();
+            String[] ss1 = s1.split(" ");
+            String[] ss2 = s2.split(" ");
+            int[] is1 = new int[Integer.parseInt(ss1[0])];
+            int[] is3 = new int[Integer.parseInt(ss2[0])];
+            Set<Integer> set = new LinkedHashSet<>();
+            
+            for(int i=0;i<is1.length;i++){
+                is1[i] = Integer.parseInt(ss1[i+1]);
+            }
+            for(int i=0;i<is3.length;i++){
+                is3[i] = Integer.parseInt(ss2[i+1]);
+            }
+            for(int i=0;i<is3.length;i++){
+                set.add(is3[i]);
+            }
+            int[] is2 = new int[set.size()];
+            int k = 0;
+            for(Integer key : set){
+                is2[k] = key;
+                k++;
+            }
+            Map<Integer,String> map = new LinkedHashMap<>();
+            Arrays.sort(is2);
+            int num = 0;
+            for(int i=0;i<is2.length;i++){
+                int n = 0;
+                map.put(is2[i],"");
+                for(int j=0;j<is1.length;j++){
+                    if((""+is1[j]).indexOf(""+is2[i]) != -1){
+                        map.put(is2[i],map.get(is2[i]) + " " + j + " " + is1[j]);
+                        n++;
+                        num+=2;
+                    }
+                }
+                map.put(is2[i], n + map.get(is2[i]));
+                if(n!=0){
+                    num+=2;
+                }
+            }
+            System.out.print(num);
+            for(Integer i : map.keySet()){
+                if(map.get(i).length() != 1){
+                    System.out.print( " "+i +" "+ map.get(i));
+                }
+            }
+        }
+    }
+}
+*/
+
+import java.io.*;
+import java.util.*;
+
+public class Main {//数据分类处理
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = null;
+        while ((str = br.readLine()) != null) {
+            if (str.equals("")) continue;
+            String[] I = str.split(" ");
+            String[] temp = br.readLine().split(" ");
+            long[] R = new long[Integer.parseInt(temp[0])];
+            for (int i = 0; i < R.length; i++) R[i] = Long.parseLong(temp[i+1]);
+            Arrays.sort(R);
+            StringBuilder res = new StringBuilder();
+            int count = 0;
+            for (int i = 0; i < R.length; i++) {
+                if (i > 0 && R[i] == R[i-1]) continue;
+                String pattern = R[i] + "";
+                int num = 0;
+                StringBuilder index = new StringBuilder();
+                for (int j = 1; j < I.length; j++) {
+                    if (I[j].indexOf(pattern) != -1) {
+                        num++;
+                        index.append(" ").append(j-1).append(" ").append(I[j]);
+                    }
+                }
+                if (num > 0){
+                    res.append(" ").append(R[i]).append(" ").append(num).append(index);
+                    count+=num*2+2;
+                }
+            }
+            System.out.println(count + res.toString());
+        }
+    }
+}
+```
+
+## 26、字符串排序（中等）String.valueOf(数组)
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String s;
+        while((s = br.readLine()) != null){
+            char[] ch = s.toCharArray();
+            char[] chars = new char[ch.length];
+            int flag = 65, j=0;
+            while(flag<=90){
+                for (char c : ch) {
+                    if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122)) {
+                        if (c == flag || c == flag + 32) {
+                            chars[j] = c;
+                            j++;
+                        }
+                    }
+                }
+                flag++;
+            }
+
+            j=0;
+            for(int i=0; i<ch.length; i++){
+                if((ch[i]>=65&&ch[i]<=90) || (ch[i]>=97&&ch[i]<=122)){
+                    ch[i] = chars[j];
+                    j++;
+                }
+            }
+            System.out.println(String.valueOf(ch));
+        }
+    }
+}
+
+```
+
+## 27、查找兄弟单词（中等）Collections.sort(数组ArrayList) 数组.get(索引)
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf=new BufferedReader(new InputStreamReader(System.in));
+        String s=null;
+        while((s=bf.readLine())!=null){
+            // 将输入的字符串分割成字符串数组
+            String[] words=s.split(" ");
+            // 待查找单词
+            String str=words[words.length-2];
+            // 兄弟单词表里的第k个兄弟单词
+            int k=Integer.parseInt(words[words.length-1]);
+            // 存放兄弟单词表
+            ArrayList<String> broWords=new ArrayList<>();
+            // 遍历输入的单词
+            for (int i = 1; i < words.length-2; i++) {
+                // 不相等且长度相同
+                if((!words[i].equals(str)) && words[i].length()==str.length()) {
+                    char[] chStr=str.toCharArray();
+                    char[] word=words[i].toCharArray();
+                    int temp=0;
+                    for (int j = 0; j < chStr.length; j++) {
+                        for (int j2 = 0; j2 < word.length; j2++) {
+                            if (word[j]==chStr[j2]) {
+                                // 使用j2作为索引是为了确保在内层循环中能够准确地标记chStr中已经被匹配到的字符，从而避免重复匹配和错误的结果
+                                chStr[j2]='0';
+                                temp++;
+                                break;
+                            }
+                        }
+                    }
+                    if (temp==chStr.length) {
+                        broWords.add(words[i]);
+                    }
+                }
+            }
+            System.out.println(broWords.size());
+            if(k>0 && k<=broWords.size()) {
+                Collections.sort(broWords);
+                System.out.println(broWords.get(k-1));
+            }
+        }
+    }
+}
+
+```
+
+## 28、素数伴侣（困难）[再刷]
+
+prime
+
+```java
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line = null;
+        while((line = br.readLine()) != null) {
+            int count = Integer.parseInt(line);
+            String[] elements = br.readLine().split(" ");
+            int[] nums = new int[count];
+            int oddCount = 0;
+            int index = 0;
+            for(String ele : elements) {
+                nums[index] = Integer.parseInt(ele);
+                if(nums[index] % 2 == 1) {
+                    oddCount++;    //记录奇数个数
+                }
+                index++;
+            }
+            
+            int[] oddNums = new int[oddCount];
+            int[] evenNums = new int[count - oddCount];
+            int oddIndex = 0;
+            int evenIndex = 0;
+            //奇偶分离
+            for(int num : nums) {
+                if(num % 2 == 0) {
+                    evenNums[evenIndex++] = num;
+                } else {
+                    oddNums[oddIndex++] = num;
+                }
+            }
+            
+            int pairCount = 0;
+            int[] evenPair = new int[evenIndex];
+            for(int i = 0; i < oddIndex; i++) {
+                boolean[] used = new boolean[evenIndex];
+                if(findPair(i, oddNums, evenNums, evenPair, used)){
+                    pairCount++;
+                }
+            }
+            System.out.println(pairCount);
+        }
+    }
+    
+    /**
+    偶数+奇数才可能是素数
+    */
+    private static boolean findPair(int oddIndex, int[] oddNums, int[] evenNums, int[] evenPair, boolean[] used) {
+        for(int i = 0;i < evenNums.length; i++) {
+            if(!used[i] && isP(oddNums[oddIndex] + evenNums[i])) {
+                used[i] = true;
+                if(evenPair[i] == 0 || findPair(evenPair[i] - 1,oddNums,evenNums,evenPair,used)) {
+                    evenPair[i] = oddIndex + 1;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    //见过比较经典的思路
+    private static boolean isP(int num) {
+        if(num <= 3) {
+            return num > 1;    // 2,3都是素数
+        }
+        //6*n+2;6*n+3;6*n+4;6*n等都不是素数;可过滤掉2/3的判断
+        if(num % 6 != 1 && num % 6 !=5) {
+            return false;
+        }
+        
+        double sqrt = Math.sqrt(num);
+        for (int i = 5; i < sqrt; i += 6) {
+            //只变量2类数据num % 6 == 1 num % 6 == 5
+            if (num % i == 0 || num % (i + 2) == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+## 29、字符串加解密（中等）Encrypt
+
+```java
+ 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Main{
+	public static void main(String []args) throws Exception{
+   BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+	 String str="";
+	 while((str=br.readLine())!=null) {
+		 String word=br.readLine();
+		 System.out.println(jiami(str));
+		 System.out.println(jiemi(word));
+ 	}
+}
+	public static String jiami(String str) {
+		char ch[]=str.toCharArray();
+		StringBuilder sb=new StringBuilder();
+		
+		for(int i=0;i<ch.length;i++) {
+			if(ch[i]>='a'&&ch[i]<='z') {
+				if(ch[i]=='z')
+					sb.append('A');
+				else 
+					sb.append((char)(ch[i]-32+1));
+				
+			}
+			else if(ch[i]>='A'&&ch[i]<='Z') {
+				if(ch[i]=='Z')
+					sb.append('a');
+				else 
+					sb.append((char)(ch[i]+32+1));
+		 	}
+			else if(ch[i]>='0'&&ch[i]<='9') {
+				if(ch[i]=='9')
+					sb.append('0');
+				else 
+					sb.append(ch[i]-'0'+1);
+				
+			}
+		
+ 		}
+		
+		return sb.toString();
+	}
+	
+	public static String jiemi(String str) {
+		char ch[]=str.toCharArray();
+		StringBuilder sb=new StringBuilder();
+		
+		for(int i=0;i<ch.length;i++) {
+			if(ch[i]>='a'&&ch[i]<='z') {
+				if(ch[i]=='a')
+					sb.append('Z');
+				else 
+					sb.append((char)(ch[i]-32-1));
+				
+			}
+			else if(ch[i]>='A'&&ch[i]<='Z') {
+				if(ch[i]=='A')
+					sb.append('z');
+				else 
+					sb.append((char)(ch[i]+32-1));
+		 	}
+			else if(ch[i]>='0'&&ch[i]<='9') {
+				if(ch[i]=='0')
+					sb.append('9');
+				else 
+					sb.append(ch[i]-'0'-1);
+				
+			}
+		
+ 		}
+		
+		return sb.toString();
+	}
+	
+	
+	
+}
+```
+
+```java
+import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.TreeSet;
+//给定一个字符串数组。按照字典顺序进行从小到大的排序。
+ 
+ 
+public class Main {
+    public static void main(String[]args)throws IOException{
+        BufferedReader bt = new BufferedReader(new InputStreamReader(System.in));
+        String str ="";
+        while((str=bt.readLine())!=null) {
+            String res = Encrypt(str);
+            System.out.println(res);
+            str=bt.readLine();
+            String res2 = unEncrypt(str);
+            System.out.println(res2);
+        }
+    }
+    public static String Encrypt(String str) {
+        char[] ch=str.toCharArray();
+        char[] newch = new char[ch.length];
+        for(int i=0; i<ch.length;i++) {
+            char c = ch[i];
+            if(c>='a'&& c<'z')
+                newch[i]=(char)(c-31);
+            if(c=='z')
+                newch[i]='A';
+            if(c>='A'&&c<'Z')
+                newch[i]=(char)(c+33);//转换成小写
+            if(c=='Z')
+                newch[i]='a';
+            if(c>='0'&&c<'9')
+                newch[i]=(char)(c+1);
+            if(c=='9')
+                newch[i]='0';
+             
+    }
+        return String.valueOf(newch);
+     
+}
+    public static String unEncrypt(String str1) {
+        char[] ch=str1.toCharArray();
+        char[] newch = new char[ch.length];
+        for(int i=0; i<ch.length;i++) {
+            char c = ch[i];
+            if(c>'a'&& c<='z')
+                newch[i]=(char)(c-33);
+            if(c=='a')
+                newch[i]='Z';
+            if(c>'A'&&c<='Z')
+                newch[i]=(char)(c+31);//
+            if(c=='A')
+                newch[i]='z';
+            if(c>'0'&&c<='9')
+                newch[i]=(char)(c-1);
+            if(c=='0')
+                newch[i]='9';
+             
+    }
+        return String.valueOf(newch);
+     
+    }
+}
+```
+
+## 30、字符串合并处理（较难）InputStream in = System.in; int count = in.available();  Arrays.copyOfRange() [再刷]
+
+```java
+import java.util.*;
+import java.io.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        String s = null;
+        while((s = bf.readLine())!=null){
+            String[] str = s.split(" ");
+            s = str[0] + str[1];
+            char[] array = sort(s);
+            System.out.println(transform(array));    
+        }
+    }
+    
+    public static char[] sort(String s){
+        char[] array = s.toCharArray();
+        int i,j;
+        for(i=2;i<array.length;i+=2){
+            if(array[i] < array[i-2]){
+                char tmp = array[i];
+                for(j=i;j>0 && array[j-2] > tmp; j-=2){
+                    array[j] = array[j-2];
+                }
+                array[j] = tmp;
+            }
+        }
+        for(i=3;i<array.length;i+=2){
+            if(array[i] < array[i-2]){
+                char tmp = array[i];
+                for(j=i;j>1 && array[j-2]>tmp;j-=2){
+                    array[j] = array[j-2];
+                }
+                array[j] = tmp;
+            }
+        }
+        return array;
+    }
+
+    public static String transform(char[] array){
+        for(int i=0;i<array.length;i++){
+            int num = -1;
+            if(array[i] >= 'A' && array[i] <= 'F'){
+                num = array[i]-'A'+10;
+            }else if(array[i] >= 'a' && array[i] <= 'f'){
+                num = array[i]-'a'+10;
+            }else if(array[i] >= '0' && array[i] <= '9'){
+                num = array[i]-'0';
+            }
+
+            if(num != -1){ // 需要转换
+                num = (num&1)*8 + (num&2)*2 + (num&4)/2 + (num&8)/8;
+                if(num<10){
+                    array[i] = (char)(num+'0');
+                }else if(num<16){
+                    array[i] = (char)(num-10+'A');
+                }
+            }
+        }
+        return new String(array);
+    }
+}
+```
+
+```java
+import java.util.*;
+import java.io.*;
+public class Main{
+    public static void main(String[] args) throws IOException{
+        InputStream in = System.in;
+        int count = in.available();
+        char c;
+        char[] str1,str2;
+        int len1,len2;
+        while(count>0){
+            str1 = new char[count];
+            str2=new char[count];
+            len1=0;
+            len2=0;
+            while(count>0){
+                count--;
+                c = (char)in.read();
+                if(c=='\n'){
+                    break;
+                }
+                if(c!=' '){
+                    if(len1==len2){
+                        str1[len1] = c;
+                        len1++;
+                    }else{
+                        str2[len2] = c;
+                        len2++;
+                    }
+                }
+            }
+            // 裁剪出数组的有效部分，并排序
+            char[] c1 = Arrays.copyOfRange(str1,0,len1),c2=Arrays.copyOfRange(str2,0,len2);
+            Arrays.sort(c1);
+            Arrays.sort(c2);
+            // new新数组，把两个数组错位合并到一起
+            char[] result = new char[len1+len2];
+            for(int i=0;i<result.length;i++){
+                if(i%2==0){
+                    result[i] = change(c1[i/2]);
+                }else{
+                    result[i] = change(c2[i/2]);
+                }
+            }
+            System.out.println(result);
+        }
+    }
+    // 字符转为要求的格式
+    public static char change(char c){
+        int n = 0,sum=0;
+        // 对十六进制内的字符做转十进制转换
+        if(c>='0'&&c<='9'){
+            n = c - '0';
+        }else if(c>='a'&&c<='f'){
+            n = c - 'a' + 10;
+        }else if(c>='A'&&c<='F'){
+            n = c - 'A'+ 10;
+        }else{
+            return c;
+        }
+        // 倒置
+        for(int i=0;i<4;i++){
+            sum = n%2 + sum * 2;
+            n /= 2;
+        }
+        // 整数转16进制
+        if(sum>9){
+            return (char)('A'+(sum-10));
+        }else{
+            return (char)('0'+sum);
+        }
+        
+    }
+}
+```
+
+## 31、单词倒排（简单）sb.append(array, 0, mark + 1); System.arraycopy
+
+```java
+import java.io.*;
+public class Main{
+    public static void main(String[] args) throws Exception {
+        InputStream in = System.in;
+        int available = in.available();
+        char[] arr = new char[available];
+        int off_word = 0;
+        int off_end = arr.length;
+        char c;
+        for(int i = 0; i < available; i++) {
+            c = (char) in.read();
+            if((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+                arr[off_word++] = c;
+            } else if(off_word > 0) {
+                System.arraycopy(arr, 0, arr, off_end - off_word, off_word);
+                off_end -= off_word + 1;
+                off_word = 0;
+                arr[off_end] = ' ';
+            }
+        }
+        System.out.println(String.valueOf(arr, off_end + 1, arr.length - off_end - 1));
+    }
+}
+```
+
+```java
+import java.io.*;
+ 
+ 
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while ((line = br.readLine()) != null && line.length() > 0) {
+            char[] array = line.trim().toCharArray();
+            StringBuilder sb = new StringBuilder();
+            boolean flag = false;
+            int mark = -1;
+            for (int i = array.length - 1; i >= 0; i--) {
+                if ((array[i] >= 'A' && array[i] <= 'Z') || (array[i] >= 'a' && array[i] <= 'z')) {
+                    if (mark == -1)
+                        mark = i;
+                    flag = true;
+                } else if (flag) {
+                    sb.append(array, i + 1, mark - i).append(' ');
+                    mark = -1;
+                    flag = false;
+                }
+            }
+            if (flag) {
+                sb.append(array, 0, mark + 1);
+                System.out.println(sb.toString());
+            } else {
+                System.out.println(sb.substring(0, sb.length() - 1));
+            }
+        }
+    }
+ 
+}
+```
+
+
+自己：没过
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bf=new BufferedReader(new InputStreamReader(System.in));
+        String s=null;
+        while((s=bf.readLine())!=null){
+            char[] chars=s.toCharArray();
+            StringBuilder sb = new StringBuilder();
+            ArrayList<String> list = new ArrayList<>();
+            for (char c : chars) {
+                if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) {
+                    sb.append(c);
+                }
+                // 最后一个字符的时候怎么处理？
+                else {
+                    list.add(sb.toString());
+                    sb = new StringBuilder();
+                }
+            }
+            Collections.reverse(list);
+            for (String str : list) {
+                System.out.print(str + " ");
+            }
+        }
+    }
+}
+```

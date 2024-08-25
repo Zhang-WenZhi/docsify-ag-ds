@@ -12,21 +12,21 @@
 
 - 数据结构
 
-  - [数组](data-structure/array.md)
-  - [链表](data-structure/list-node.md)
-  - [哈希表](data-structure/hash-table.md)
-  - [字符串](data-structure/string.md)
-  - [栈与队列](data-structure/stack-queue.md)
-  - [二叉树](data-structure/binary-tree.md)
+  - [[1]数组](data-structure/array.md)
+  - [[2]链表](data-structure/list-node.md)
+  - [[3]哈希表](data-structure/hash-table.md)
+  - [[4]字符串](data-structure/string.md)
+  - [[6]栈与队列](data-structure/stack-queue.md)
+  - [[7]二叉树](data-structure/binary-tree.md)
 
 - 算法
 
-  - [双指针法](algorithm/double-pointer.md)
-  - [回溯算法](algorithm/backtracking.md)
-  - [贪心算法](algorithm/greedy.md)
-  - [动态规划](algorithm/dynamic-programming.md)
-  - [单调栈](algorithm/monotonic-stack.md)
-  - [图论](algorithm/graph-thoery.md)
+  - [[5]双指针法](algorithm/double-pointer.md)
+  - [[8]回溯算法](algorithm/backtracking.md)
+  - [[9]贪心算法](algorithm/greedy.md)
+  - [[10]动态规划](algorithm/dynamic-programming.md)
+  - [[11]单调栈](algorithm/monotonic-stack.md)
+  - [[12]图论](algorithm/graph-thoery.md)
 
 - 收集
 
