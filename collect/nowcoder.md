@@ -1762,3 +1762,189 @@ public class Main {
     }
 }
 ```
+
+## 32、密码截取（中等）【最长回文字串】
+
+```java
+import java.io.*;
+
+// 注意类名必须为 Main, 不要有任何 package xxx 信息
+public class Main {
+    public static void main(String[] args) throws Exception {
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        // 注意 hasNext 和 hasNextLine 的区别
+        String line = bf.readLine();
+        char[] ss = line.toCharArray();
+        // 动态规划
+        int max = 0;
+        for (int i = 0; i < ss.length; i++) {
+            int one = 0;
+            int two = 0;
+            int[] flag = new int[2];
+            for (int j = 0; j <= i; j++) {
+                if (i + j + 1 < ss.length && flag[0] == 0 && ss[i - j] == ss[i + 1 + j]) {
+                    one++;
+                } else {
+                    flag[0] = 1;
+                }
+                if (i + j < ss.length && flag[1] == 0 && ss[i - j] == ss[i + j]) {
+                    two++;
+                } else {
+                    flag[1] = 1;
+                } 
+                if (flag[0] == 1 && flag[1] == 1) {
+                    break;
+                }
+            }
+            one = one * 2;
+            two = two * 2 - 1;
+            max = Math.max(max, one);
+            max = Math.max(max, two);
+        }
+        System.out.println(max);
+    }
+}
+```
+
+```java
+import java.io.*;
+
+// 注意类名必须为 Main, 不要有任何 package xxx 信息
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String in = br.readLine();
+        char[] chars = in.toCharArray();
+        int len = 1, maxLength = 1;
+
+        // 处理ABA型
+        for (int i = 1; i < chars.length - 2; i++) {
+            int left = i - 1;
+            int right = i + 1;
+            while (left >= 0 && right < chars.length) {
+                if (chars[left] == chars[right]) {
+                    len = right - left + 1;
+                    left --;
+                    right ++;
+                    maxLength = Math.max(len, maxLength);
+                } else break;
+            }
+        }
+
+        // 处理ABBA型
+        for (int i = 1; i < chars.length - 2; i++) {
+            int left = i - 1;
+            int right = i + 2;
+            while (left >= 0 && right < chars.length) {
+                if (chars[i] == chars[i+1] && chars[left] == chars[right]) {
+                    len = right - left + 1;
+                    left --;
+                    right ++;
+                    maxLength = Math.max(len, maxLength);
+                } else break;
+            }
+        }
+        System.out.println(maxLength);
+    }
+}
+```
+
+## 33、整数与IP地址间的转换（中等）
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main{
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str = null;
+        while ((str = br.readLine()) != null) {
+            String[] ip = str.split("\\.");
+            long num = Long.parseLong(br.readLine());
+            // 转10进制
+            System.out.println(Long.parseLong(ip[0]) << 24 | Long.parseLong(ip[1]) << 16 |
+                    Long.parseLong(ip[2]) << 8 | Long.parseLong(ip[3]));
+            // 转ip地址
+            // StringBuilder sb = new StringBuilder();
+            // sb.append(String.valueOf((num >> 24) & 255)).append(".").append(String.valueOf((num >> 16) & 255))
+            //         .append(".").append(String.valueOf((num >> 8) & 255)).append(".").append(String.valueOf(num & 255));
+            // System.out.println(sb.toString());
+            String sb = String.valueOf((num >> 24) & 255) + "." + String.valueOf((num >> 16) & 255) +
+                    "." + String.valueOf((num >> 8) & 255) + "." + String.valueOf(num & 255);
+            System.out.println(sb);
+        }
+    }
+}
+
+```
+
+## 34、图片整理（简单） new String(字节数组) String.valueOf(字符数组)
+
+```java
+import java.util.*;
+import java.io.*;
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String s = "";
+        while((s=br.readLine())!=null){
+            char[] result = s.toCharArray();
+            Arrays.sort(result);
+            System.out.println(String.valueOf(result));
+        }
+    }
+}
+```
+
+```java
+import java.io.*;
+import java.util.*;
+
+public class Main{
+    public static void main(String[] args) throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String s;
+        while((s = br.readLine()) != null){
+            byte[] by = s.getBytes();
+            Arrays.sort(by);
+            System.out.println(new String(by));
+        }
+    }
+}
+
+```
+
+## 35、蛇形矩阵（简单）sb.setCharAt  sb.deleteCharAt
+
+```java
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+
+public class Main{
+    public static void main(String[] args)throws IOException{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String str;
+        while((str = br.readLine())!=null){
+            int num = Integer.parseInt(str);
+            StringBuilder sb = new StringBuilder();
+            for(int i = 1; i <= num; i++){
+                int start = (i - 1) * i / 2 + 1;
+                int step = i + 1;
+                for(int j = 1; j <= num - i + 1; j++){
+                    sb.append(start).append(" ");
+                    start += step;
+                    step ++ ;
+                }
+                sb.setCharAt(sb.length()-1,'\n');
+            }
+            sb.deleteCharAt(sb.length()-1);
+            System.out.println(sb.toString());
+        }
+    }
+}
+```
+
