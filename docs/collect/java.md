@@ -1,5 +1,88 @@
 # Java 八股文面试收集
 
+## java nio包
+
+在Java中，java.nio（New Input/Output）包提供了一种与传统的java.io包不同的I/O处理方式。java.nio包引入了缓冲区（Buffer）、通道（Channel）和选择器（Selector）等概念，使得I/O操作更加高效和灵活。
+
+以下是一些java.nio包中的关键类和概念：
+
+Buffer（缓冲区）：
+Buffer是一个用于存储特定基本类型数据的容器。常见的Buffer子类有ByteBuffer、CharBuffer、IntBuffer等。
+Buffer有三个重要的属性：capacity（容量）、position（位置）和limit（界限）。
+
+Channel（通道）：
+Channel类似于传统的流（Stream），但它可以进行双向数据传输。常见的Channel子类有FileChannel、SocketChannel、ServerSocketChannel等。
+Channel可以与Buffer一起使用，进行高效的数据读写操作。
+
+Selector（选择器）：
+Selector用于实现非阻塞I/O操作。它可以监控多个Channel，判断哪些Channel有数据可读、可写或有异常情况。
+Selector通常与SelectionKey一起使用，SelectionKey表示一个Channel和一个Selector之间的关系。
+
+Charset（字符集）：
+Charset用于字符编码和解码。它提供了将字节序列转换为字符序列以及将字符序列转换为字节序列的方法。
+
+```java
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+
+public class NIOExample {
+    public static void main(String[] args) {
+        try (FileChannel channel = FileChannel.open(Paths.get("example.txt"), StandardOpenOption.READ, StandardOpenOption.WRITE)) {
+            ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+            // 读取数据到Buffer
+            int bytesRead = channel.read(buffer);
+            while (bytesRead != -1) {
+                buffer.flip(); // 切换到读模式
+                while (buffer.hasRemaining()) {
+                    System.out.print((char) buffer.get());
+                }
+                buffer.clear(); // 清空Buffer，准备下一次读取
+                bytesRead = channel.read(buffer);
+            }
+
+            // 写入数据到Buffer
+            String newData = "New data to write";
+            buffer.clear();
+            buffer.put(newData.getBytes());
+            buffer.flip();
+            while (buffer.hasRemaining()) {
+                channel.write(buffer);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
+
+通过使用java.nio包，可以实现更高效和灵活的I/O操作，特别是在处理大量数据和高并发场景时。
+
+## 在Java中，负数用补码表示，补码是什么？
+
+补码是一种用于`表示有符号整数的方法`，它可以将一个数的二进制表示扩展到任意位数的整数。补码的表示方式是将一个数的二进制表示取反，然后加1。
+
+例如，对于8位二进制数，-1的补码表示为11111111，而1的补码表示为00000001。对于16位二进制数，-1的补码表示为1111111111111111，而1的补码表示为0000000000000001。
+
+补码的主要优点是它可以方便地进行加法和减法运算。在进行加法运算时，可以直接将两个数的补码相加，然后取结果的补码作为结果。在进行减法运算时，可以将减数取反，然后与被减数相加，最后取结果的补码作为结果。
+
+在计算机中，补码（Two's Complement）是一种用于表示有符号整数的方法。补码表示法使得加法和减法可以在硬件上统一处理，而不需要单独的减法器。补码的定义如下：
+
+正数的补码：正数的补码就是其本身。例如，+5的补码就是0101（假设使用4位表示）。
+
+负数的补码：负数的补码是通过对其绝对值的二进制表示取反（即0变1，1变0），然后加1得到的。例如，-5的补码计算过程如下：
+
+5的二进制表示是0101。
+取反得到1010。
+加1得到1011。
+因此，-5的补码是1011。
+
+补码的优点
+简化加减法：使用补码表示法，加法和减法可以统一处理。
+
 ## PriorityQueue PriorityQueue的优先级排序是怎样的？
 
 PriorityQueue 是一个基于优先堆的无界优先队列。优先队列的元素按照自然顺序排序，也可以通过比较器（Comparator）来指定顺序。优先队列不允许插入 null 元素，也不允许插入不可比较的元素。
@@ -1914,6 +1997,307 @@ C语言和C++的学习路线了，内容大致包括：岗位分析、语言学�
 可灰度：在系统上线之前，先让一部分用户使用新功能，如果出现问题，可以快速回滚，不影响其他用户。
 
 可回滚：在系统上线之后，如果出现问题，可以快速回滚，恢复到之前的状态。
+
+## HBase（Hadoop Database）是一个开源的、分布式的、可扩展的、非关系型数据库
+
+HBase（Hadoop Database）是一个开源的、分布式的、可扩展的、非关系型数据库，它基于Google的BigTable论文设计，运行在Hadoop集群之上。HBase主要用于存储和管理大量的稀疏数据集，适用于需要实时读写访问的场景。
+
+HBase的主要特点
+分布式存储：
+
+HBase将数据分布在多个服务器上，通过水平扩展来处理大规模数据集。
+高可靠性：
+
+HBase使用Hadoop的HDFS（Hadoop Distributed File System）作为底层存储，HDFS提供了数据冗余和容错机制，确保数据的高可靠性。
+强一致性：
+
+HBase支持强一致性读写，确保在分布式环境下数据的一致性。
+稀疏数据集：
+
+HBase特别适合存储稀疏数据集，即大部分数据为空或缺失的情况。
+实时读写：
+
+HBase提供了快速的随机读写能力，适用于需要实时访问数据的场景。
+列族存储：
+
+HBase采用列族（Column Family）的方式组织数据，每个列族包含一组相关的列。这种存储方式使得数据更加灵活和高效。
+HBase的架构
+HBase的架构主要包括以下几个组件：
+
+HMaster：
+
+负责管理HBase集群中的元数据信息，如表的创建、删除和修改等操作。
+监控RegionServer的状态，负责负载均衡和故障恢复。
+RegionServer：
+
+负责实际的数据存储和读写操作。
+每个RegionServer管理多个Region，每个Region包含表的一部分数据。
+ZooKeeper：
+
+用于协调HBase集群中的各个组件，提供分布式锁服务。
+维护HBase集群的元数据信息和状态。
+HDFS：
+
+作为HBase的底层存储系统，提供高可靠性和高可扩展性的数据存储。
+HBase的数据模型
+HBase的数据模型类似于Google的BigTable，主要包括以下几个概念：
+
+表（Table）：
+
+HBase中的数据存储在表中，每个表由多个行组成。
+行（Row）：
+
+每行由一个唯一的行键（Row Key）标识，行键是字节数组，用于快速检索数据。
+列族（Column Family）：
+
+列族是列的集合，每个列族在物理上存储在一起，列族在表创建时定义。
+列（Column）：
+
+列由列族和列限定符（Column Qualifier）组成，列限定符用于标识列族中的具体列。
+单元格（Cell）：
+
+单元格是行、列族和列限定符的组合，包含一个具体的数据值和时间戳。
+
+```sql
+CREATE TABLE 'my_table' (
+  'cf1' (
+    'col1',
+    'col2'
+  ),
+  'cf2' (
+    'col3',
+    'col4'
+  )
+)
+
+```
+
+在这个示例中，我们创建了一个名为my_table的表，包含两个列族cf1和cf2，每个列族包含两个列。
+
+HBase是一个强大的分布式数据库，适用于需要处理大规模数据和高并发读写的场景。它在许多大型互联网公司和组织中得到了广泛应用。
+
+## DDD（Domain-Driven Design，领域驱动设计）
+
+在传统的软件开发方法中，开发人员往往关注的是技术实现而非业务领域本身。而在DDD的方法论中，开发人员需要与业务专家紧密合作，`深入了解业务领域，将业务领域的知识和业务逻辑转化为软件设计和开发中的概念和实现`。
+
+DDD（Domain-Driven Design，领域驱动设计）是一种软件开发方法论，强调将软件系统的开发重点放在核心领域（Domain）和领域逻辑上。DDD的目标是通过对领域的深入理解和建模，构建出更符合业务需求的高质量软件系统。
+
+DDD的核心概念
+领域（Domain）：
+
+领域是软件系统所要解决的业务问题空间。它包含了业务规则、流程、概念和实体等。
+领域模型（Domain Model）：
+
+领域模型是对领域中的概念、规则和关系的抽象表示。它帮助开发者理解和表达业务逻辑。
+实体（Entity）：
+
+实体是具有唯一标识的对象，其生命周期内标识保持不变。实体通常具有状态和行为。
+值对象（Value Object）：
+
+值对象是没有唯一标识的对象，仅通过其属性值来区分。值对象通常是不可变的。
+聚合（Aggregate）：
+
+聚合是一组相关对象的集合，作为一个整体进行操作和维护一致性。聚合根（Aggregate Root）是聚合的入口点。
+领域服务（Domain Service）：
+
+领域服务用于封装不属于任何实体或值对象的领域逻辑。领域服务通常是无状态的。
+仓储（Repository）：
+
+仓储用于封装数据访问逻辑，提供对聚合的持久化和查询操作。
+工厂（Factory）：
+
+工厂用于封装对象的创建逻辑，提供复杂的对象创建过程。
+界限上下文（Bounded Context）：
+
+界限上下文是领域模型的逻辑边界，每个界限上下文包含一组特定的领域模型和业务逻辑。
+DDD的优点
+业务一致性：
+
+DDD强调对业务领域的深入理解，确保软件系统与业务需求高度一致。
+可维护性：
+
+通过清晰的领域模型和界限上下文，DDD使得软件系统更易于维护和扩展。
+可测试性：
+
+DDD鼓励细粒度的模块化和清晰的职责划分，使得单元测试和集成测试更加容易。
+团队协作：
+
+DDD促进了业务专家和开发团队之间的紧密合作，通过共同的语言和模型，提高沟通效率。
+
+DDD项目示例
+
+```text
+my-ddd-project
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   ├── com
+│   │   │   │   ├── mycompany
+│   │   │   │   │   ├── domain
+│   │   │   │   │   │   ├── model
+│   │   │   │   │   │   │   ├── Entity.java
+│   │   │   │   │   │   │   ├── ValueObject.java
+│   │   │   │   │   │   ├── service
+│   │   │   │   │   │   │   ├── DomainService.java
+│   │   │   │   │   │   ├── repository
+│   │   │   │   │   │   │   ├── Repository.java
+│   │   │   │   │   ├── application
+│   │   │   │   │   │   ├── service
+│   │   │   │   │   │   │   ├── ApplicationService.java
+│   │   │   │   │   ├── infrastructure
+│   │   │   │   │   │   ├── persistence
+│   │   │   │   │   │   │   ├── HibernateRepository.java
+│   │   │   │   │   │   ├── messaging
+│   │   │   │   │   │   │   ├── KafkaPublisher.java
+│   │   │   │   │   ├── interfaces
+│   │   │   │   │   │   ├── rest
+│   │   │   │   │   │   │   ├── Controller.java
+│   │   ├── resources
+│   │   │   ├── application.properties
+│   ├── test
+│   │   ├── java
+│   │   │   ├── com
+│   │   │   │   ├── mycompany
+│   │   │   │   │   ├── domain
+│   │   │   │   │   │   ├── model
+│   │   │   │   │   │   │   ├── EntityTest.java
+│   │   │   │   │   │   ├── service
+│   │   │   │   │   │   │   ├── DomainServiceTest.java
+│   │   │   │   │   ├── application
+│   │   │   │   │   │   ├── service
+│   │   │   │   │   │   │   ├── ApplicationServiceTest.java
+│   │   ├── resources
+│   │   │   ├── application-test.properties
+
+```
+
+在这个示例中，项目结构遵循DDD的原则，将领域模型、领域服务、应用服务、基础设施和接口层分开，确保各层的职责清晰，便于维护和扩展。
+
+```text
+ddd-domin
+├── pom.xml
+└── src
+    └── main
+        └── java
+            └── org
+                └── example
+                    ├── App.java
+                    ├── adapter
+                    │   ├── market
+                    │   └── product
+                    │       ├── kafka
+                    │       │   └── ProductConsumer.java
+                    │       ├── socket
+                    │       │   └── ProductSocket.java
+                    │       └── web
+                    │           └── ProductController.java
+                    ├── application
+                    │   ├── event
+                    │   │   ├── EventManager.java
+                    │   │   └── IEvent.java
+                    │   ├── market
+                    │   └── product
+                    │       ├── ProductFactory.java
+                    │       ├── ProductService.java
+                    │       ├── command
+                    │       │   ├── AddCountProductCommand.java
+                    │       │   └── CreateProductCommand.java
+                    │       ├── dto
+                    │       │   └── ProductDTO.java
+                    │       ├── event
+                    │       │   ├── AbstractProductEvent.java
+                    │       │   ├── AddNumProjectEvent.java
+                    │       │   └── CreateProjectEvent.java
+                    │       └── mapstruct
+                    │           └── ProductStruct.java
+                    ├── common
+                    │   └── exception
+                    │       └── BusException.java
+                    ├── domain
+                    │   ├── market
+                    │   ├── product
+                    │   │   └── Product.java
+                    │   └── repository
+                    │       ├── IProductRepository.java
+                    │       └── entity
+                    │           └── ProductEntity.java
+                    └── infrastructure
+                        ├── cache
+                        ├── repository
+                        │   └── impl
+                        │       └── ProductRepositoryImpl.java
+                        └── sqlmapper
+```
+
+https://www.jianshu.com/p/9d7d6121f5cf   DDD项目实践
+
+## springboot 事物隔离代码
+
+```java
+@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
+```
+
+在Spring Boot中，可以通过使用@Transactional注解来管理事务，并且可以指定事务的隔离级别。以下是一个示例代码，展示了如何在Spring Boot中使用事务隔离级别：
+
+首先，确保你的Spring Boot项目中包含了Spring事务管理的依赖。如果你使用的是Maven，可以在pom.xml中添加以下依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+
+```
+
+然后，在你的服务类中使用@Transactional注解来指定事务的隔离级别。Spring支持以下几种隔离级别：
+
+ISOLATION_DEFAULT：使用底层数据库的默认隔离级别。
+ISOLATION_READ_UNCOMMITTED：允许读取未提交的数据（可能导致脏读、不可重复读和幻读）。
+ISOLATION_READ_COMMITTED：允许读取已提交的数据（防止脏读，但可能导致不可重复读和幻读）。
+ISOLATION_REPEATABLE_READ：保证在同一个事务中多次读取同一数据的结果是一致的（防止脏读和不可重复读，但可能导致幻读）。
+ISOLATION_SERIALIZABLE：最高的隔离级别，完全服从ACID的隔离级别，确保事务串行执行（防止脏读、不可重复读和幻读）。
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class MyService {
+
+    @Autowired
+    private MyRepository myRepository;
+
+    @Transactional(isolation = Isolation.READ_COMMITTED)
+    public void performTransaction() {
+        // 在这里执行你的数据库操作
+        myRepository.save(new MyEntity());
+    }
+}
+
+```
+
+在这个示例中，performTransaction方法将在READ_COMMITTED隔离级别下执行事务。你可以根据需要更改isolation属性的值来指定不同的事务隔离级别。
+
+请注意，事务隔离级别的选择应根据具体的业务需求和数据库的性能考虑。较高的隔离级别可以提供更强的一致性保证，但可能会影响性能。
+
+## springboot 事物隔离级别
+
+- 脏读：一个事务读取了另一个事务未提交的数据
+- 不可重复读：一个事务读取了另一个事务已经提交的update数据
+- 幻读：一个事务读取了另一个事务已经提交的insert数据
+- 串行化：所有事务串行执行，隔离级别最高，事务不能并发执行
+
+## springboot 事物传播级别
+
+- PROPAGATION_REQUIRED：支持当前事务，如果当前没有事务，就新建一个事务
+- PROPAGATION_SUPPORTS：支持当前事务，如果当前没有事务，就以非事务方式执行
+- PROPAGATION_MANDATORY：支持当前事务，如果当前没有事务，就抛出异常
+- PROPAGATION_REQUIRES_NEW：新建事务，如果当前存在事务，把当前事务挂起
+- PROPAGATION_NOT_SUPPORTED：以非事务方式执行操作，如果当前存在事务，就把当前事务挂起
+- PROPAGATION_NEVER：以非事务方式执行，如果当前存在事务，则抛出异常
+- PROPAGATION_NESTED：如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类似的操作
 
 
 
