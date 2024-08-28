@@ -2300,5 +2300,567 @@ public class MyService {
 - PROPAGATION_NESTED：如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类似的操作
 
 
+## BS CS 架构
+
+- BS架构：Browser/Server架构，客户端是浏览器，服务器是Web服务器，通过HTTP协议进行通信
+- CS架构：Client/Server架构，客户端是桌面应用程序，服务器是服务器应用程序，通过TCP/IP协议进行通信
+
+TCP/IP协议和HTTP/HTTPS协议的区别
+
+- TCP/IP协议：传输控制协议/互联网协议，是一种面向连接的、可靠的、基于字节流的传输层通信协议，用于在网络上进行数据传输
+- HTTP/HTTPS协议：超文本传输协议/安全超文本传输协议，是一种应用层协议，用于在网络上传输超文本信息，`HTTP协议使用TCP/IP协议进行传输`，HTTPS协议在HTTP协议的基础上加入了SSL/TLS加密，提供了数据传输的安全性
+
+在BS（Browser/Server）架构和CS（Client/Server）架构中，处理输入的方式有所不同。BS架构通常通过HTTP请求和响应来处理输入，而CS架构则可能直接通过Socket或类似的机制进行通信。
+
+以下是如何在BS架构中处理输入的示例代码，使用Spring Boot来接收HTTP请求并处理输入：
+
+`BS架构示例（Spring Boot）`
+首先，确保你的Spring Boot项目中包含了Spring Web依赖。如果你使用的是Maven，可以在pom.xml中添加以下依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+
+```
+
+然后，创建一个控制器来处理HTTP请求：
+```java
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class InputController {
+
+    @GetMapping("/process")
+    public String processInput(@RequestParam int num) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 1; i <= num; i++) {
+            int start = (i - 1) * i / 2 + 1;
+            int step = i + 1;
+            for (int j = 1; j <= num - i + 1; j++) {
+                sb.append(start).append(" ");
+                start += step;
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+}
+
+```
+
+在这个示例中，processInput方法接收一个名为num的请求参数，并根据该参数生成相应的输出。
+
+`CS架构示例`
+在CS架构中，可以使用Socket来进行客户端和服务器之间的通信。以下是一个简单的CS架构示例，使用Java的Socket API：
+
+服务器端代码
+```java
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server {
+    public static void main(String[] args) throws IOException {
+        ServerSocket serverSocket = new ServerSocket(12345);
+        while (true) {
+            Socket clientSocket = serverSocket.accept();
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            String str;
+            while ((str = in.readLine()) != null) {
+                int num = Integer.parseInt(str);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 1; i <= num; i++) {
+                    int start = (i - 1) * i / 2 + 1;
+                    int step = i + 1;
+                    for (int j = 1; j <= num - i + 1; j++) {
+                        sb.append(start).append(" ");
+                        start += step;
+                    }
+                    sb.append("\n");
+                }
+                out.println(sb.toString());
+            }
+        }
+    }
+}
+
+```
+
+客户端代码:
+```java
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+
+public class Client {
+    public static void main(String[] args) throws IOException {
+        Socket socket = new Socket("localhost", 12345);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        String userInput;
+        while ((userInput = stdIn.readLine()) != null) {
+            out.println(userInput);
+            System.out.println("Server response: " + in.readLine());
+        }
+    }
+}
+在这个CS架构示例中，服务器端监听一个端口，客户端连接到该端口并发送输入，服务器处理输入并返回结果。
+```
+
+`BS CS 架构的结合`
+在实际应用中，BS 和 CS 架构可以结合使用，以充分发挥各自的优势。例如，可以使用 BS 架构提供基本的 Web 服务，同时使用 CS 架构提供高性能和复杂功能。
+
+示例：
+
+使用 BS 架构提供基本的用户界面和数据展示。
+使用 CS 架构提供高性能的数据处理和复杂的业务逻辑。
+通过这种结合，可以实现既具有跨平台性和易维护性，又具有高性能和丰富功能的应用系统。
+
+## jdk 各个版本特性
+
+JDK（Java Development Kit）是Java开发工具包，每个版本都会引入新的特性和改进。以下是JDK各个主要版本的特性概述：
+
+JDK 1.0
+初始版本，包含了Java的基本功能。
+
+JDK 1.1
+内部类（Inner Classes）
+JavaBeans
+JDBC（Java Database Connectivity）
+RMI（Remote Method Invocation）
+反射（Reflection）
+
+JDK 1.2（Java 2）
+Swing图形API
+Java插件（Java Plug-in）
+Java IDL（Interface Definition Language）
+Collections框架
+
+JDK 1.3
+Java Sound API
+HotSpot虚拟机
+
+JDK 1.4
+正则表达式（Regular Expressions）
+NIO（Non-blocking I/O）
+日志API（Logging API）
+XML解析器（XML Parser）
+断言（Assertions）
+
+JDK 5（Java 5）
+泛型（Generics）
+枚举（Enums）
+自动装箱/拆箱（Autoboxing/Unboxing）
+注解（Annotations）
+可变参数（Varargs）
+增强的for循环（Enhanced for Loop）
+
+JDK 6
+脚本引擎（Scripting Engine）
+JDBC 4.0
+改进的锁机制（Improved Locking Mechanisms）
+
+JDK 7
+钻石操作符（Diamond Operator）
+多重捕获异常（Multi-catch）
+try-with-resources
+switch语句支持字符串
+NIO 2.0
+
+`JDK 8
+Lambda表达式
+函数式接口（Functional Interfaces）
+默认方法（Default Methods）
+新的日期/时间API（Date and Time API）
+Stream API
+Optional类`
+
+JDK 9
+模块系统（Project Jigsaw）
+JShell（交互式编程工具）
+改进的HTTP客户端
+私有接口方法
+
+JDK 10
+局部变量类型推断（Local-Variable Type Inference）
+
+JDK 11
+标准化的HTTP客户端
+运行单文件源代码程序（Launch Single-File Source-Code Programs）
+新的字符串方法
+
+JDK 12
+Switch表达式预览
+微基准测试套件
+
+JDK 13
+Switch表达式正式引入
+文本块（Text Blocks）预览
+
+JDK 14
+instanceof模式匹配预览
+Records预览
+改进的NullPointerException消息
+
+JDK 15
+密封类（Sealed Classes）预览
+文本块正式引入
+隐藏类（Hidden Classes）
+
+JDK 16
+记录类（Records）正式引入
+instanceof模式匹配正式引入
+向量API预览
+
+JDK 17
+密封类正式引入
+强封装JDK内部API
+新的macOS渲染管道
+每个版本的JDK都在不断改进和增强Java语言的功能和性能，以适应不断变化的开发需求和技术趋势。
+
+## AOP 面向切面编程
+
+AOP（Aspect-Oriented Programming，面向切面编程）是一种编程范式，旨在通过将横切关注点（cross-cutting concerns）从业务逻辑中分离出来，来提高模块化程度和代码的可维护性。AOP的核心思想是将那些与业务逻辑无关的代码（`如日志记录、事务管理、安全检查等`）`从业务逻辑中分离出来`，以减少代码的重复和复杂性。
+
+实现方式
+AOP可以通过以下几种方式实现：
+
+1. **静态代理**：在编译时将横切关注点代码织入到目标类中。这种方式需要手动编写代理类，且代理类与目标类一一对应，难以维护。
+2. **动态代理**：在运行时动态创建代理类，通过反射机制调用目标类的方法。这种方式不需要手动编写代理类，但性能相对较低。
+3. **字节码增强**：通过修改字节码，在运行时动态织入横切关注点代码。这种方式性能较高，但实现复杂。
+4. **AspectJ**：一种基于Java的AOP框架，通过在编译时或运行时修改字节码，将横切关注点代码织入到目标类中。AspectJ提供了丰富的AOP功能，但需要额外的编译器和运行时支持。
+5. **Spring AOP**：Spring框架提供的AOP实现，通过动态代理或CGLIB字节码增强技术，将横切关注点代码织入到目标类中。Spring AOP支持方法级别的AOP，且与Spring框架无缝集成。
+6. **AspectJ Weaver**：AspectJ提供的字节码增强工具，可以在编译时或运行时将横切关注点代码织入到目标类中。AspectJ Weaver支持类级别的AOP，且与AspectJ框架无缝集成。
+
+使用场景
+AOP适用于以下场景：
+1. **日志记录**：在方法执行前后记录日志信息，以便于调试和监控。
+2. **事务管理**：在方法执行前后开启和提交事务，确保数据的一致性。
+3. **安全检查**：在方法执行前进行权限检查，确保只有授权用户才能执行该方法。
+4. **性能监控**：在方法执行前后记录时间，以便于性能分析和优化。
+5. **缓存**：在方法执行前检查缓存，如果缓存中存在结果则直接返回，否则执行方法并将结果缓存起来。
+6. **异常处理**：在方法执行过程中捕获异常，并进行相应的处理。
 
 
+IOP（面向方面编程，Aspect-Oriented Programming）是一种编程范式，旨在通过允许开发者将横切关注点（cross-cutting concerns）模块化，从而提高代码的模块性和可维护性。横切关注点是指那些影响多个模块或类的功能，如日志记录、事务管理、安全性检查等。
+
+主要概念
+切面（Aspect）：切面是横切关注点的模块化实现。它包含了一组通知（advice）和切入点（pointcut），用于定义在何时何地应用这些通知。
+通知（Advice）：通知定义了切面在特定连接点（join point）上执行的动作。常见的通知类型包括：
+前置通知（Before Advice）：在连接点之前执行。
+后置通知（After Advice）：在连接点之后执行，无论是否发生异常。
+返回通知（After-returning Advice）：在连接点正常完成后执行。
+异常通知（After-throwing Advice）：在连接点抛出异常后执行。
+环绕通知（Around Advice）：在连接点前后执行，可以控制是否继续执行连接点。
+切入点（Pointcut）：切入点定义了哪些连接点会被切面捕获。它通常使用表达式来匹配特定的方法或代码位置。
+连接点（Join Point）：连接点是程序执行过程中的一个特定点，如方法调用、异常抛出等。
+引入（Introduction）：引入允许向现有类添加新的方法或字段，从而扩展类的功能。
+实现方式
+IOP可以通过多种方式实现，常见的有：
+
+AspectJ：一个功能强大的AOP框架，支持编译时、编译后和加载时织入（weaving）。
+Spring AOP：Spring框架提供的AOP支持，基于代理模式实现，主要用于Spring应用中。
+
+示例
+以下是一个使用Spring AOP的简单示例：
+```java
+// 定义一个切面
+@Aspect
+public class LoggingAspect {
+
+    // 定义一个切入点，匹配所有service包下的方法
+    @Pointcut("execution(* com.example.service.*.*(..))")
+    public void serviceMethods() {}
+
+    // 前置通知，在切入点之前执行
+    @Before("serviceMethods()")
+    public void logBefore(JoinPoint joinPoint) {
+        System.out.println("Before method: " + joinPoint.getSignature().getName());
+    }
+
+    // 后置通知，在切入点之后执行
+    @After("serviceMethods()")
+    public void logAfter(JoinPoint joinPoint) {
+        System.out.println("After method: " + joinPoint.getSignature().getName());
+    }
+}
+
+// 配置Spring应用上下文
+@Configuration
+@EnableAspectJAutoProxy
+public class AppConfig {
+
+    @Bean
+    public LoggingAspect loggingAspect() {
+        return new LoggingAspect();
+    }
+}
+
+```
+
+在这个示例中，LoggingAspect 是一个切面，定义了在 service 包下的所有方法执行前后进行日志记录的通知。通过Spring AOP，这些通知会在匹配的方法执行时自动应用。
+
+优点
+模块化：将横切关注点与核心业务逻辑分离，提高代码的模块性和可维护性。
+重用性：切面可以跨多个模块重用，减少重复代码。
+灵活性：通过配置切入点和通知，可以灵活地控制横切关注点的应用范围和行为。
+缺点
+复杂性：引入AOP会增加系统的复杂性，特别是在理解和调试方面。
+性能开销：AOP的实现可能会引入一定的性能开销，特别是在使用动态代理和反射的情况下。
+总的来说，IOP是一种强大的编程范式，适用于需要处理横切关注点的场景，但在使用时需要权衡其带来的复杂性和性能开销。
+
+## IOC（Inversion of Control，控制反转）是一种设计原则
+
+IOC（Inversion of Control，控制反转）是一种设计原则，它将`对象的创建和依赖管理从应用程序代码中转移到外部容器（如Spring容器）。IOC的核心思想是将对象的控制权从应用程序代码中转移给外部容器`，从而实现对象之间的解耦。
+
+在传统的编程模式中，对象的创建和依赖管理是由应用程序代码直接控制的。例如，在创建一个对象时，需要手动创建其依赖的对象，并将它们传递给该对象。这种方式会导致代码的耦合度增加，难以进行单元测试和重构。
+
+而IOC通过将对象的创建和依赖管理交给外部容器，实现了对象之间的解耦。在IOC模式下，应用程序代码只需要声明需要哪些依赖，而不需要关心这些依赖的创建和配置。外部容器会根据应用程序代码的声明，自动创建和配置这些依赖，并将它们注入到应用程序代码中。
+
+在Spring框架中，IOC的实现是通过依赖注入（Dependency Injection，DI）来实现的。依赖注入是一种将依赖对象注入到目标对象中的技术。Spring框架提供了多种依赖注入的方式，包括构造函数注入、Setter方法注入和字段注入。
+
+优点
+解耦：通过将对象的创建和依赖管理交给外部容器，实现了对象之间的解耦，降低了代码的耦合度。
+可测试性：在IOC模式下，可以通过外部容器注入模拟对象，从而进行单元测试。
+灵活性：通过配置文件或注解，可以灵活地控制对象的创建和依赖管理。
+重用性：通过将依赖管理交给外部容器，可以重用已有的对象配置，提高代码的重用性。
+缺点
+学习曲线：IOC是一种新的编程范式，需要一定的学习和适应过程。
+性能开销：在IOC模式下，对象的创建和依赖管理是由外部容器来完成的，可能会引入一定的性能开销。
+配置复杂性：在IOC模式下，需要配置大量的对象和依赖关系，可能会增加配置的复杂性。
+总的来说，IOC是一种强大的设计原则，通过将对象的创建和依赖管理交给外部容器，实现了对象之间的解耦，提高了代码的可测试性和灵活性。然而，它也有一些缺点，如学习曲线、性能开销和配置复杂性等。因此，在使用IOC时，需要权衡其带来的优点和缺点。
+
+IOC（Inversion of Control，控制反转）是一种设计原则，用于减少代码之间的耦合度。它通过将对象的创建和管理交给外部容器（通常是框架或容器）来实现。IOC的核心思想是将控制权从应用程序代码转移到外部容器，从而实现更灵活和可维护的系统。
+
+主要概念
+依赖注入（Dependency Injection，DI）：依赖注入是IOC的一种实现方式，通过外部容器将对象的依赖关系注入到对象中，而不是由对象自己创建或查找依赖。
+容器（Container）：容器是负责管理对象生命周期和依赖关系的组件。它负责创建对象、注入依赖、配置对象以及销毁对象。
+Bean：在IOC容器中管理的对象称为Bean。Bean是由容器创建和管理的，通常通过配置文件或注解进行定义。
+实现方式
+IOC可以通过多种方式实现，常见的有：
+
+Spring框架：Spring是最流行的Java IOC框架，提供了强大的依赖注入和面向切面编程（AOP）功能。
+Guice：Google Guice是一个轻量级的Java依赖注入框架，主要使用注解进行配置。
+CDI（Contexts and Dependency Injection）：CDI是Java EE标准的一部分，提供了一种标准的依赖注入机制。
+示例
+以下是一个使用Spring框架实现依赖注入的简单示例：
+```java
+// 定义一个接口
+public interface MessageService {
+    String getMessage();
+}
+
+// 实现接口
+public class EmailService implements MessageService {
+    public String getMessage() {
+        return "Email message";
+    }
+}
+
+// 定义一个需要依赖注入的类
+public class MyApp {
+    private MessageService messageService;
+
+    // 构造器注入
+    public MyApp(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    public void sendMessage() {
+        System.out.println(messageService.getMessage());
+    }
+}
+
+// 配置Spring应用上下文
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MessageService messageService() {
+        return new EmailService();
+    }
+
+    @Bean
+    public MyApp myApp() {
+        return new MyApp(messageService());
+    }
+}
+
+// 运行应用程序
+public class Main {
+    public static void main(String[] args) {
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        MyApp myApp = context.getBean(MyApp.class);
+        myApp.sendMessage();
+    }
+}
+
+```
+
+在这个示例中，`MyApp 类依赖于 MessageService 接口，但并不直接创建 MessageService 的实例。相反，它通过构造器注入的方式从Spring容器中获取 MessageService 的实例。AppConfig 类定义了Bean的配置，Spring容器根据这些配置创建和管理Bean`。
+
+优点
+解耦：通过将对象的创建和管理交给外部容器，减少了代码之间的直接依赖，提高了系统的灵活性和可维护性。
+可测试性：依赖注入使得单元测试更加容易，可以通过Mock对象替换实际的依赖进行测试。
+可配置性：通过配置文件或注解，可以灵活地改变对象的创建和依赖关系，而无需修改代码。
+缺点
+复杂性：引入IOC框架会增加系统的复杂性，特别是在理解和调试方面。
+性能开销：IOC容器的初始化和Bean的管理可能会引入一定的性能开销。
+总的来说，IOC是一种强大的设计原则，适用于需要减少耦合度和提高系统灵活性的场景，但在使用时需要权衡其带来的复杂性和性能开销。
+
+## JDK 1.8 流的用法
+
+Java 8 引入了流（Stream）的概念，它是一种用于处理集合数据的API。流提供了一种声明式的方式来处理数据，可以简化代码，提高可读性和可维护性。
+
+下面是一些常见的流操作：
+
+1. 创建流：可以使用集合的 `stream()` 方法创建流，也可以使用 `Stream.of()` 方法创建包含指定元素的流。
+
+```java
+List<String> list = Arrays.asList("a", "b", "c");
+Stream<String> stream = list.stream();
+Stream<String> stream2 = Stream.of("a", "b", "c");
+```
+
+2. 过滤：使用 `filter()` 方法可以过滤出满足条件的元素。
+
+```java
+Stream<String> filteredStream = stream.filter(s -> s.startsWith("a"));
+```
+
+
+
+3. 映射：使用 `map()` 方法可以将流中的元素映射为其他形式。
+
+```java
+Stream<String> mappedStream = stream.map(String::toUpperCase);
+```
+
+
+
+4. 聚合：使用 `collect()` 方法可以将流中的元素收集为集合或其他形式。
+
+```java
+List<String> collectedList = stream.collect(Collectors.toList());
+```
+
+
+
+5. 统计：使用 `count()` 方法可以统计流中元素的数量。
+
+```java
+long count = stream.count();
+```
+
+
+
+6. 其他操作：流还提供了许多其他操作，如 `sorted()`（排序）、`distinct()`（去重）、`limit()`（限制元素数量）等。
+
+```java
+Stream<String> sortedStream = stream.sorted();
+Stream<String> distinctStream = stream.distinct();
+Stream<String> limitedStream = stream.limit(2);
+```
+
+需要注意的是，流是一个中间操作，它不会立即执行，只有当遇到终端操作时才会执行。常见的终端操作有 `collect()`、`count()`、`forEach()` 等。
+
+流还可以进行组合操作，例如先过滤再映射再收集：
+
+```java
+List<String> filteredAndMappedList = stream.filter(s -> s.startsWith("a"))
+                                          .map(String::toUpperCase)
+                                          .collect(Collectors.toList());
+```
+
+流还可以进行并行操作，使用 `parallelStream()` 方法可以创建一个并行流，并行流可以充分利用多核CPU的性能，提高处理速度。
+
+```java
+Stream<String> parallelStream = stream.parallel();
+```
+
+需要注意的是，并行流并不是万能的，它适用于计算密集型任务，对于IO密集型任务，使用并行流反而可能会降低性能。
+
+
+JDK 1.8 引入了流（Stream）API，它提供了一种高效且易于使用的方式来处理集合数据。流API允许你以声明式的方式处理数据，使得代码更加简洁和易读。下面是一些常见的流操作及其用法：
+
+1. 创建流
+从集合创建流：
+List<String> list = Arrays.asList("a", "b", "c");
+Stream<String> stream = list.stream();
+
+从数组创建流：
+String[] array = {"a", "b", "c"};
+Stream<String> stream = Arrays.stream(array);
+
+使用Stream.of()创建流：
+Stream<String> stream = Stream.of("a", "b", "c");
+
+2. 中间操作
+filter：过滤元素
+stream.filter(s -> s.startsWith("a"));
+
+map：转换元素
+stream.map(String::toUpperCase);
+
+sorted：排序元素
+stream.sorted();
+
+distinct：去重元素
+stream.distinct();
+
+3. 终端操作
+forEach：遍历元素
+stream.forEach(System.out::println);
+
+collect：收集元素到集合
+List<String> result = stream.collect(Collectors.toList());
+
+reduce：归约操作
+Optional<String> reduced = stream.reduce((s1, s2) -> s1 + "," + s2);
+
+count：计数
+long count = stream.count();
+
+anyMatch、allMatch、noneMatch：匹配操作
+boolean anyStartsWithA = stream.anyMatch(s -> s.startsWith("a"));
+boolean allStartsWithA = stream.allMatch(s -> s.startsWith("a"));
+boolean noneStartsWithA = stream.noneMatch(s -> s.startsWith("a"));
+
+
+4. 示例
+下面是一个完整的示例，展示了如何使用流API来处理一个字符串列表：
+```java
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class StreamExample {
+    public static void main(String[] args) {
+        List<String> list = Arrays.asList("a1", "a2", "b1", "c2", "c1");
+
+        List<String> result = list.stream()
+                .filter(s -> s.startsWith("c"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+
+        result.forEach(System.out::println);
+    }
+}
+
+```
+
+这个示例首先过滤出以"c"开头的字符串，然后将它们转换为大写，再进行排序，最后收集到一个新的列表中并打印出来。
+
+通过这些操作，JDK 1.8 的流API使得数据处理变得更加简洁和高效。
