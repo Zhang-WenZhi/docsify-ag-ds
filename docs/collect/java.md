@@ -2864,3 +2864,542 @@ public class StreamExample {
 这个示例首先过滤出以"c"开头的字符串，然后将它们转换为大写，再进行排序，最后收集到一个新的列表中并打印出来。
 
 通过这些操作，JDK 1.8 的流API使得数据处理变得更加简洁和高效。
+
+## 数据库性能分析工具
+
+1. MySQL Workbench
+MySQL Workbench 是 MySQL 官方提供的图形化工具，用于数据库设计和开发。它提供了性能分析工具，可以帮助你分析和优化查询性能。
+
+2. Percona Toolkit
+Percona Toolkit 是一个开源工具集，用于 MySQL 和 Percona Server 的性能监控、优化和故障排除。它包含了一些性能分析工具，如 pt-query-digest 和 pt-query-analyzer，可以帮助你分析查询性能。
+
+3. MySQL Enterprise Monitor
+MySQL Enterprise Monitor 是 MySQL 的商业监控工具，提供了实时的性能监控和性能分析功能。它可以帮助你识别性能瓶颈，并提供优化建议。
+
+4. Zabbix
+Zabbix 是一个开源的监控解决方案，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+5. Nagios
+Nagios 是一个开源的监控解决方案，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+6. New Relic APM
+New Relic APM 是一个商业的 APM 工具，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+7. Datadog
+Datadog 是一个商业的监控解决方案，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+8. Prometheus
+Prometheus 是一个开源的监控解决方案，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+9. Grafana
+Grafana 是一个开源的监控解决方案，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+10. Oracle Enterprise Manager
+Oracle Enterprise Manager 是 Oracle 提供的商业监控工具，可以监控 MySQL 的性能指标，如查询时间、连接数等。它可以帮助你及时发现性能问题并进行优化。
+
+## MySQL 数据库explain用法
+
+EXPLAIN 是 MySQL 提供的一个命令，用于分析查询语句的性能。它可以显示查询语句的执行计划，包括查询的执行顺序、使用的索引、查询的行数等信息。通过分析这些信息，你可以了解查询的性能瓶颈，并采取相应的优化措施。
+
+下面是 EXPLAIN 命令的基本用法：
+
+```sql
+EXPLAIN SELECT * FROM table_name WHERE column_name = 'value';
+```
+
+这条命令会返回一个结果集，其中包含了查询的执行计划。结果集中的每一行表示一个查询步骤，包括以下信息：
+
+- id：查询步骤的标识符。每个查询步骤都有一个唯一的 id。
+- select_type：查询的类型。常见的类型包括 SIMPLE（简单查询，不包含子查询或 UNION）、PRIMARY（主查询，包含子查询或 UNION）、UNION（UNION 查询的第一个查询）、DEPENDENT UNION（UNION 查询的第二个查询，依赖于外部查询的结果）等。
+- table：查询涉及的表名。
+- type：查询的类型。常见的类型包括 ALL（全表扫描）、index（索引扫描）、range（范围扫描）、ref（引用扫描）、eq_ref（唯一索引扫描）、const（常量扫描）等。查询的类型决定了查询的性能，一般来说，查询的类型越低，查询的性能越好。
+- possible_keys：查询可能使用的索引。
+- key：查询实际使用的索引。
+- key_len：查询使用的索引的长度。
+- ref：查询使用的索引的引用。
+- rows：查询返回的行数。
+- Extra：额外的信息。常见的信息包括 Using where（使用了 WHERE 子句）、Using index（使用了索引）、Using temporary（使用了临时表）等。    
+
+通过分析这些信息，你可以了解查询的性能瓶颈，并采取相应的优化措施。例如，如果查询的类型是 ALL，表示全表扫描，你可以考虑添加索引来提高查询的性能。如果查询使用了临时表，你可以考虑优化查询语句，避免使用临时表。
+
+总之，EXPLAIN 命令是一个非常有用的工具，可以帮助你了解查询的性能，并采取相应的优化措施。
+
+## Java中如何获取当前时间戳
+
+在Java中，可以使用`System.currentTimeMillis()`方法来获取当前时间戳。这个方法返回一个long类型的值，表示从1970年1月1日00:00:00 UTC到当前时间的毫秒数。
+
+下面是一个示例代码：
+
+```java
+long timestamp = System.currentTimeMillis();
+System.out.println("当前时间戳：" + timestamp);
+```
+
+输出结果类似于：
+
+```
+当前时间戳：1634567890000
+```
+
+这个时间戳可以用于记录日志、生成唯一ID等场景。
+
+## Java中如何获取当前日期
+
+在Java中，可以使用`java.util.Date`类来获取当前日期。`Date`类表示一个特定的瞬间，精确到毫秒。
+
+下面是一个示例代码：
+
+```java
+import java.util.Date;
+
+public class Main {
+    public static void main(String[] args) {
+        Date currentDate = new Date();
+        System.out.println("当前日期：" + currentDate);
+    }
+}
+```
+
+输出结果类似于：
+
+```
+当前日期：Thu Oct 20 10:30:00 CST 2022
+```
+
+这个日期可以用于记录日志、生成文件名等场景。
+
+## MYSQL 数据分区功能/类型 数据库分区需要结合场景+对应的查询语句
+MySQL 数据分区功能是一种将数据表分成多个部分的技术，可以提高查询性能和存储效率。MySQL 支持多种类型的分区，包括范围分区、列表分区、哈希分区和复合分区等。
+
+下面是一个示例，演示如何使用范围分区：
+
+```sql
+CREATE TABLE sales (
+    id INT,
+    sale_date DATE,
+    amount DECIMAL(10, 2)
+)
+PARTITION BY RANGE(YEAR(sale_date)) (
+    PARTITION p0 VALUES LESS THAN (2020),
+    PARTITION p1 VALUES LESS THAN (2021),
+    PARTITION p2 VALUES LESS THAN (2022),
+    PARTITION p3 VALUES LESS THAN MAXVALUE
+);
+```
+
+这个示例创建了一个名为 sales 的表，并使用范围分区将数据分成四个部分。每个部分对应一个年份，例如 p0 对应 2020 年之前的数据，p1 对应 2020 年到 2021 年的数据，以此类推。
+
+使用分区可以加快查询速度，因为 MySQL 可以根据分区键直接定位到包含所需数据的分区，而不需要扫描整个表。此外，分区还可以提高存储效率，因为 MySQL 可以将数据分散到多个磁盘上，从而减少磁盘 I/O。
+
+`RANGE分区`
+
+月份或年份进行分区的场景
+
+```sql
+CREATE TABLE biz_execution_region (
+    id BIGINT AUTO_INCREMENT,
+    biz_id BIGINT,
+    biz_date DATE,
+    remark VARCHAR(255),
+    PRIMARY KEY (id, biz_date)
+)
+PARTITION BY RANGE (TO_DAYS(biz_date)) (
+    PARTITION p202401 VALUES LESS THAN TO_DAYS(('2024-02-01')),
+    PARTITION p202402 VALUES LESS THAN TO_DAYS(('2024-03-01')),
+    PARTITION p202403 VALUES LESS THAN TO_DAYS(('2024-04-01')),
+    PARTITION p202404 VALUES LESS THAN TO_DAYS(('2024-05-01')),
+    PARTITION p202405 VALUES LESS THAN TO_DAYS(('2024-06-01')),
+    PARTITION p202406 VALUES LESS THAN TO_DAYS(('2024-07-01')),
+    PARTITION p202407 VALUES LESS THAN TO_DAYS(('2024-08-01')),
+    PARTITION p202408 VALUES LESS THAN TO_DAYS(('2024-09-01')),
+    PARTITION p202409 VALUES LESS THAN TO_DAYS(('2024-10-01')),
+    PARTITION p202410 VALUES LESS THAN TO_DAYS(('2024-11-01')),
+    PARTITION p202411 VALUES LESS THAN TO_DAYS(('2024-12-01')),
+    PARTITION pMax VALUES LESS THAN MAXVALUE
+)
+
+```
+
+限制了月份是必填查询参数，则使用RANGE分区可以减少查询扫描的数据量。查询性能依旧很高
+
+`LIST分区`
+
+枚举值进行分区的场景
+
+```sql
+CREATE TABLE city_orders (
+    id BIGINT AUTO_INCREMENT,
+    order_id BIGINT,
+    user_id BIGINT,
+    province VARCHAR(50),
+    PRIMARY KEY (id, province)
+)
+PARTITION BY LIST COLUMNS (province) (
+    PARTITION pBeijing VALUES IN ('Beijing'),
+    PARTITION pShanghai VALUES IN ('Shanghai'),
+    PARTITION pGuangzhou VALUES IN ('Guangzhou'),
+    PARTITION pZheJiang VALUES IN ('ZheJiang'),
+    PARTITION pOther VALUES IN ('Other')
+)
+```
+
+
+`HASH分区`
+
+根据某个字段的值进行哈希运算(哈希函数)，然后根据运算结果进行分区
+
+```sql
+CREATE TABLE city_orders (
+    id INT NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    order_date DATE,
+    PRIMARY KEY (id, product_id)
+)
+PARTITION BY HASH (product_id)
+PARTITIONS 20;
+```
+
+`KEY分区`
+
+采用了mysql内部定义的散列函数，不过hash分区提供了更大的灵活性，可以自定义一些hash表达式
+
+```sql
+CREATE TABLE city_orders (
+    id INT NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    order_date DATE,
+    PRIMARY KEY (id, product_id)
+)
+PARTITION BY KEY (product_id)
+PARTITIONS 20;
+```
+
+## FITTEN CODE 插件
+
+更新后，自动更新上下文，自动获取上下文对象，不需要再选中代码
+
+`@workspace` 全项目分析
+
+`截图，拖进去就能得到前端代码`
+
+`聊天分享，还可以继续问`
+
+## @Async (需自定义线程池，否则可能并发大导致内存溢出) 默认线程池 springboot 2.1.0前：SimpleAsyncTaskExecutor 2.1.0之后：TaskExecutor
+
+自定义业务线程池，注入到Bean容器
+```java
+@Configuration
+public class ThreadPoolExecutorConfig {
+    private final int CORE_THREAD_SIZE = Runtime.getRuntime().availableProcessors() * 1;
+    private final int MAX_THREAD_SIZE = Runtime.getRuntime().availableProcessors() * 2 + 1;
+    private final int QUEUE_SIZE = 1000;
+    private final int KEEP_ALIVE_TIME = Integer.MAX_VALUE; // 秒
+
+    @Bean('myTaskExecutor') // 名称，下面用
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(CORE_THREAD_SIZE);
+        executor.setMaxPoolSize(MAX_THREAD_SIZE);
+        executor.setQueueCapacity(QUEUE_SIZE);
+        executor.setKeepAliveSeconds(KEEP_ALIVE_TIME);
+        executor.setThreadNamePrefix("myTaskExecutor-");
+        // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        executor.initialize();
+        executor.setAllowCoreThreadTimeOut(true);
+        return executor;
+    }
+}
+```
+
+使用
+
+```java
+@Service
+public class AsyncService {
+    @Async('myTaskExecutor')
+    public void asyncWaiting() throws InterruptedException {
+        // 异步方法
+        System.out.println(Thread.currentThread().getName() +"异步方法开始");
+        Thread.sleep(100);
+        System.out.println("异步方法结束");
+    }
+}
+```
+
+
+
+```java
+@Configuration
+public class AsyncConfig implements AsyncConfigurer {
+    @Override
+    public Executor getAsyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("AsyncThread-");
+        executor.initialize();
+        return executor;
+    }
+}
+```
+
+使用
+```java
+@Service
+public class AsyncService {
+    @Async
+    public void asyncMethod() {
+        // 异步执行的方法
+    }
+}
+```
+
+## ThreadPoolTaskScheduler 定时任务
+
+```java
+@Configuration
+@EnableScheduling
+public class ScheduleConfig {
+    @Bean
+    public TaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(10);
+        scheduler.setThreadNamePrefix("TaskScheduler-");
+        scheduler.setAwaitTerminationSeconds(60);
+        scheduler.setWaitForTasksToCompleteOnShutdown(true);
+        scheduler.initialize();
+        return scheduler;
+    }
+}
+```
+
+使用
+
+```java
+@Service
+public class ScheduleService {
+    @Scheduled(cron = "0 0/1 * * * ?") // 每分钟执行一次
+    public void scheduledMethod() {
+        // 定时执行的方法
+    }
+}
+```
+
+## 包米豆(Mybatis-plus的作者) Lock4j @Lock4j分布式锁 ThreadPoolTaskScheduler
+
+该项目的源码也很简单，适合新手看
+
+屏蔽了锁的底层实现，redis锁换成zookeeper，一行业务代码都不用动
+
+```java
+public class TestService {
+    public void asyncMethod() {
+        System.out.println(userContext);
+        // 后面一堆代码
+    }
+
+    @Lock4j(keys={#user.id}, expire = 60000, acquireTimeout=1000)
+    public void lockMethod(User user) throws InterruptedException {
+        System.out.println("进入锁方法内部，用户信息为：" + user);
+        Thread.sleep(5000);
+        System.out.println("锁方法执行完成");
+    }
+
+}
+```
+
+```java
+public class TestController {
+    public void testThreadLock() {
+        // 调用一个异步方法
+        testService.asyncMethod();
+    }
+
+    @GetMapping("testLock4j")
+    public void testLock4j(@RequestBody User user) throws InterruptedException {
+        testService.lockMethod(user);
+    }
+}
+```
+
+
+## 解决ThreadLocal在多线程的情况下，无法进行上下文传递的问题 阿里：TransmittableThreadLocal （继承了JDK自带的InheritableThreadLocal -> ThreadLocal）
+
+https://codeease.top/blog
+
+```java
+public class TestController {
+    @Autowired
+    private TestService testService;
+
+    @GetMapping("/testThreadLocal")
+    public void testThreadLocal() {
+        // 前面一堆逻辑
+        // 获取用户信息
+        UserContextInfo userContext = userContext.getUserContext();
+        System.out.println(userContext);
+        // 调用一个异步方法
+        testService.asyncMethod();
+    }
+}
+
+```
+
+```java
+@Service
+@Slf4j
+public class TestService {
+
+    @Async("taskExecutor")
+    public void asyncMethod() {
+        // 前面一堆逻辑
+        // 执行异步方法体
+        UserContextInfo userContext = userContext.getUserContext();
+        System.out.println(userContext);
+        // 后面一堆逻辑
+    }
+}
+```
+
+```java
+
+public class UserContext {
+    // 用户上下文，通过ThreadLocal保存
+    // private static ThreadLocal<UserContextInfo> userContext = new ThreadLocal<>(); // ThreadLocal换成 TransmittableThreadLocal
+    private static ThreadLocal<UserContextInfo> userContext = new TransmittableThreadLocal<>();
+
+    private UserContext() {
+    }
+
+    public static UserContextInfo getUserContext() {
+        return userContext.get();
+    }
+
+    public static void setUserContext(UserContextInfo userContextInfo) {
+        userContext.set(userContextInfo);
+    }
+}
+```
+
+```java
+@Configuration
+public class ThreadPoolExecutorConfig {
+    private final int CORE_THREAD_SIZE = Runtime.getRuntime().availableProcessors() * 1;
+    private final int MAX_THREAD_SIZE = Runtime.getRuntime().availableProcessors() * 2 + 1;
+    private final int QUEUE_SIZE = 1000;
+    private final int KEEP_ALIVE_TIME = Integer.MAX_VALUE; // 秒
+
+    @Bean('myTaskExecutor') // 名称，下面用
+    public Executor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(CORE_THREAD_SIZE);
+        executor.setMaxPoolSize(MAX_THREAD_SIZE);
+        executor.setQueueCapacity(QUEUE_SIZE);
+        executor.setKeepAliveSeconds(KEEP_ALIVE_TIME);
+        executor.setThreadNamePrefix("myTaskExecutor-");
+        // executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        executor.initialize();
+        executor.setAllowCoreThreadTimeOut(true);
+        // return executor;
+        return TtlExecutor.getTtlExecutor(executor); // 解决线程池中线程上下文丢失的问题 // https://github.com/alibaba/transmittable-thread-local
+        // 不管父线程，还是其他线程，都能获取用户上下文信息
+    }
+}
+```
+
+```java
+// 拦截器
+@Component
+public class UserInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (handler instanceof HandlerMethod) {
+            // 从请求中获取token，通过token获取用户信息
+            String token = request.getHeader("User-Account");
+            UserContextInfo userContextInfo = getUserInfoByToken(token);
+            // 将用户信息保存到ThreadLocal中，先清空，再设置值
+            UserContext.setUserContext(userContextInfo);
+            return true;
+        }
+        return true;
+    }
+
+    // aferCompletion方法在请求完成之后执行，可以用来清理ThreadLocal中的数据
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        UserContext.setUserContext(null);
+    }
+}
+```
+
+## TaskDecorator装饰器，解决主线程的用户信息，到异步线程丢了的问题(和上面同)
+
+https://codeease.top/blog
+
+```java
+public class BusinessContextDecorator implements TaskDecorator {
+    @Override
+    public Runnable decorate(Runnable runnable) {
+        UserContextInfo userContext = UserContext.getUserContext();
+        return () -> {
+            try {
+                UserContext.setUserContext(userContext);
+                runnable.run();
+            }finally {
+                UserContext.clear();
+            }
+        };
+    }
+}
+
+
+```
+
+```java
+@Configuration
+public class ThreadPoolExecutorConfig {
+
+    private static final int CORE_THREAD_SIZE = Runtime.getRuntime().availableProcessors() + 1;
+
+    private static final int MAX_THREAD_SIZE = Runtime.getRuntime().availableProcessors() * 2 + 1;
+
+    private static final int WORK_QUEUE = 1000;
+
+    private static final int KEEP_ALIVE_SECONDS = 60;
+
+    @Bean("taskExecutor")
+    public Executor taskExecutor(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(CORE_THREAD_SIZE);
+        executor.setMaxPoolSize(MAX_THREAD_SIZE);
+        executor.setQueueCapacity(WORK_QUEUE);
+        executor.setKeepAliveSeconds(KEEP_ALIVE_SECONDS);
+        executor.setThreadNamePrefix("task-thread-");
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        // 新增线程装饰器
+        executor.setTaskDecorator(new BusinessContextDecorator());
+        executor.initialize();
+        return executor;
+    }
+}
+
+```
+
+## @Transactional失效场景
+
+`@Transactional`注解只能应用到public方法上，否则事务不会生效
+
+1. @Transactional 应用在非 public 修饰的方法上
+2. @Transactional 注解属性 propagation 设置错误
+3. @Transactional 注解属性 rollbackFor 设置错误
+4. 同一个类中方法调用，导致@Transactional失效
+5. 异常被try…catch捕获导致@Transactional失效
+
+
+
+
