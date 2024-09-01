@@ -1,3 +1,405 @@
+
+
+
+
+
+## 空.git项目上传远程仓库
+
+指定 git init 的分支名
+1. 可以指定初始化的分支：git init -b master
+
+2. 还可以全局设置：
+git config --global init.defaultBranch master
+
+
+```shell
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git branch -m main
+致命错误：不是 git 仓库（或者任何父目录）：.git
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git init
+提示： 使用 'master' 作为初始分支的名称。这个默认分支名称可能会更改。要在新仓库中
+提示： 配置使用初始分支名，并消除这条警告，请执行：
+提示：
+提示：  git config --global init.defaultBranch <名称>
+提示：
+提示： 除了 'master' 之外，通常选定的名字有 'main'、'trunk' 和 'development'。
+提示： 可以通过以下命令重命名刚创建的分支：
+提示：
+提示：  git branch -m <name>
+已初始化空的 Git 仓库于 /Users/zhangwenzhi/NewProjects/preact-vite-wenzhi/.git/
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git branch -m main
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git branch
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git remote add origin https://gitee.com/loyalty-code/preact-vite-wenzhi.git
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git pull origin main:main
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 5 (delta 0), reused 0 (delta 0), pack-reused 0
+展开对象中: 100% (5/5), 2.73 KiB | 399.00 KiB/s, 完成.
+来自 https://gitee.com/loyalty-code/preact-vite-wenzhi
+ * [新分支]          main       -> main
+ * [新分支]          main       -> origin/main
+错误：工作区中下列未跟踪的文件将会因为合并操作而被覆盖：
+        README.md
+请在合并前移动或删除。
+正在终止
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git pull origin main:main
+已经是最新的。
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git branch
+* main
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git push --set-upstream origin main
+分支 'main' 设置为跟踪 'origin/main'。
+Everything up-to-date
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git add .
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git commit -m "INIT"
+[main 50316a4] INIT
+ 19 files changed, 3674 insertions(+), 96 deletions(-)
+ create mode 100644 .gitignore
+ delete mode 100644 LICENSE
+ create mode 100644 README-preact.md
+ delete mode 100644 README.en.md
+ delete mode 100644 README.md
+ create mode 100644 README.zh-CN.md
+ create mode 100644 index.html
+ create mode 100644 package.json
+ create mode 100644 pnpm-lock.yaml
+ create mode 100644 public/vite.svg
+ create mode 100644 src/assets/preact.svg
+ create mode 100644 src/components/Header.tsx
+ create mode 100644 src/index.tsx
+ create mode 100644 src/pages/Home/index.tsx
+ create mode 100644 src/pages/Home/style.css
+ create mode 100644 src/pages/_404.tsx
+ create mode 100644 src/style.css
+ create mode 100644 tsconfig.json
+ create mode 100644 vite.config.ts
+zhangwenzhi@zhangwezhideMBP preact-vite-wenzhi % git push --set-upstream origin main
+枚举对象中: 25, 完成.
+对象计数中: 100% (25/25), 完成.
+使用 8 个线程进行压缩
+压缩对象中: 100% (21/21), 完成.
+写入对象中: 100% (24/24), 42.41 KiB | 10.60 MiB/s, 完成.
+总共 24（差异 0），复用 0（差异 0），包复用 0（来自  0 个包）
+remote: Powered by GITEE.COM [1.1.5]
+remote: Set trace flag f747e996
+To https://gitee.com/loyalty-code/preact-vite-wenzhi.git
+   2c8eda5..50316a4  main -> main
+分支 'main' 设置为跟踪 'origin/main'。
+```
+
+## vite 创建preact项目
+
+npm init preact/pnpm creat preact
+
+```shell
+zhangwenzhi@zhangwezhideMBP NewProjects % pnpm init preact
+ ERR_PNPM_INIT_ARG  init command does not accept any arguments
+
+Maybe you wanted to run "pnpm create preact"
+zhangwenzhi@zhangwezhideMBP NewProjects % pnpm create  preact
+.../191ab165f1e-1407                     | Progress: resolved 1, reused 0, downl.../191ab165f1e-1407                     | Progress: resolved 16, reused 7, down.../191ab165f1e-1407                     |  +23 ++
+.../191ab165f1e-1407                     | Progress: resolved 16, reused 7, down.../191ab165f1e-1407                     | Progress: resolved 23, reused 14, dow.../191ab165f1e-1407                     | Progress: resolved 23, reused 14, downloaded 9, added 23, done
+┌  Preact - Fast 3kB alternative to React with the same modern API
+│
+◇  Project directory:
+│  preact-vite-wenzhi
+│
+◇  Project language:
+│  TypeScript
+│
+◇  Use router?
+│  Yes
+│
+◇  Prerender app (SSG)?
+│  No
+│
+◇  Use ESLint?
+│  Yes
+│
+◇  Set up project directory
+│
+◇  Installed project dependencies
+│
+◇  Getting Started ─────────╮
+│                           │
+│  $ cd preact-vite-wenzhi  │
+│  $ pnpm dev               │
+│                           │
+├───────────────────────────╯
+│
+└  You're all set!
+
+zhangwenzhi@zhangwezhideMBP NewProjects % cd preact-vite-wenzhi
+```
+
+```shell
+pnpm dev
+pnpm build
+pnpm preview
+```
+
+## 一文搞懂：什么是SSR、SSG、CSR？前端渲染技术全解析
+
+https://segmentfault.com/a/1190000044882791
+
+`一、CSR（客户端渲染）`
+
+示例（使用React）：
+```jsx
+// 假设有一个React组件
+import React from 'react';
+
+function MyComponent() {
+  const [message, setMessage] = React.useState('Hello, CSR!');
+
+  const handleClick = () => {
+    setMessage('Clicked!');
+  };
+
+  return (
+    <div>
+      <p>{message}</p>
+      <button onClick={handleClick}>Click Me</button>
+    </div>
+  );
+}
+
+// 在HTML文件中引入React和组件的JavaScript文件
+// 浏览器加载并执行这些JavaScript，从而渲染页面
+```
+
+`二、SSR（服务器端渲染）`
+
+示例（使用React的服务器端渲染）：
+```js
+// 服务器端代码（Node.js）
+const React = require('react');
+const ReactDOMServer = require('react-dom/server');
+const MyComponent = require('./MyComponent').default; // 假设MyComponent是上面定义的React组件
+
+// 渲染组件为HTML字符串
+const html = ReactDOMServer.renderToString(<MyComponent />);
+
+// 将HTML字符串发送给客户端
+// ...（这里省略了HTTP服务器和响应发送的代码）
+```
+
+`三、SSG（静态站点生成）`
+
+示例（使用Nunjucks模板引擎）：
+模板文件（index.njk）：
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Static Site</title>
+</head>
+<body>
+  <h1>{{ message }}</h1>
+</body>
+</html>
+```
+
+构建脚本（Node.js）：
+```js
+const nunjucks = require('nunjucks');
+const fs = require('fs');
+
+// 配置Nunjucks模板引擎
+nunjucks.configure('views', { autoescape: true });
+
+// 渲染模板
+const res = nunjucks.render('index.njk', { message: 'Hello, SSG!' });
+
+// 将渲染结果写入HTML文件
+fs.writeFileSync('dist/index.html', res);
+
+// 现在你可以将生成的`dist/index.html`部署到服务器上
+```
+
+
+对于需要丰富`交互效果和实时数据`的场景，可以选择`CSR`；对于需要`优化首屏加载速度和SEO效果`的场景，可以选择`SSR`；而对于`内容更新不频繁、对性能要求高`的场景，可以选择`SSG`。同时，也可以结合使用多种技术来实现更好的用户体验和性能优化。
+
+## @ vite项目设置
+
+`安装依赖 @types/node`
+```shell
+import path from 'path'; // @types/node
+```
+
+`vite.config.ts`
+
+```ts
+resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    }
+  },
+```
+
+`tsconfig.json`
+
+```json
+/* @别名配置 */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+```
+
+## 分块加载大数据
+
+```js
+async function loadNovel() {
+  const url = 'https://example.com/novel.txt';
+  const response = await fetch(url);
+  const reader = response.body.getReader();
+  
+  // 解码
+  const decoder = new TextDecoder('utf-8');
+  // 死循环
+  for (;;) {
+    const [value ,done] = await reader.read();
+    console.log(value); // 字节数组 文字编码
+    if (done) {
+      break;
+    }
+    const text = decoder.decode(value);
+    console.log(text); // 文本
+    // console.log(text.slice(-5)); // 可能乱码，需要处理
+  }
+  
+}
+
+loadNovel();
+```
+
+```js
+async function loadNovel() {
+  const url = 'https://example.com/novel.txt';
+  const response = await fetch(url);
+  const reader = response.body.getReader();
+  
+  // 解码
+  const decoder = new TextDecoder('utf-8');
+
+  let remainChunk = new Uint8Array(0);
+
+  // 死循环
+  for (;;) {
+    const [value ,done] = await reader.read();
+    // console.log(value); // 字节数组 文字编码
+    if (done) {
+      break;
+    }
+    
+    // 查找最后一个换行符
+    const lastIndex = value.lastIndexOf(0x0a);
+
+    const chunk = value.slice(0, lastIndex);
+    const readChunk = new Uint8Array(remainChunk.length + chunk.length);
+    readChunk.set(remainChunk);
+    readChunk.set(chunk, remainChunk.length);
+    remainChunk = value.slice(lastIndex);
+    const text = decoder.decode(readChunk);
+
+    // const text = decoder.decode(value);
+    console.log(text); // 文本
+    // console.log(text.slice(-5)); // 可能乱码，需要处理
+  }
+  
+}
+
+loadNovel();
+```
+
+
+使用 mergedChunk 来合并剩余的字节数组和新读取的字节数组。
+使用 lastIndexOf 方法来查找最后一个换行符。
+在处理完所有数据后，处理剩余的字节数组。
+这样可以确保逐块读取和解码文本时，正确处理每一行，并避免乱码问题。
+```js
+async function loadNovel() {
+  const url = 'https://example.com/novel.txt';
+  const response = await fetch(url);
+
+  const body = response.body;
+  if (!body) {
+    throw new Error('Response body is null');
+  }
+  const reader = body.getReader();
+  
+  // 解码
+  const decoder = new TextDecoder('utf-8');
+
+  let remainChunk = new Uint8Array(0);
+
+  // 死循环
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) {
+      break;
+    }
+    
+    // 合并剩余的字节数组和新读取的字节数组
+    const mergedChunk = new Uint8Array(remainChunk.length + value.length);
+    mergedChunk.set(remainChunk);
+    mergedChunk.set(value, remainChunk.length);
+
+    // 查找最后一个换行符
+    const lastIndex = mergedChunk.lastIndexOf(0x0a);
+
+    // 处理完整的行
+    if (lastIndex !== -1) {
+      const chunk = mergedChunk.slice(0, lastIndex);
+      const text = decoder.decode(chunk);
+      console.log(text); // 文本
+
+      // 更新剩余的字节数组
+      remainChunk = mergedChunk.slice(lastIndex + 1);
+    } else {
+      // 如果没有找到换行符，则将所有字节数组保留为剩余字节数组
+      remainChunk = mergedChunk;
+    }
+  }
+
+  // 处理剩余的字节数组
+  if (remainChunk.length > 0) {
+    const text = decoder.decode(remainChunk);
+    console.log(text); // 文本
+  }
+}
+
+loadNovel();
+
+```
+
+
+ai插件生成：
+```js
+async function loadNovel() {
+  const url = 'https://example.com/novel.txt';
+  const response = await fetch(url);
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder('utf-8');
+  let result;
+  let chunkSize = 1024;
+  let novel = '';
+
+  while (!result.done) {
+    result = await reader.read();
+    const chunk = decoder.decode(result.value, { stream: !result.done });
+    novel += chunk;
+    if (novel.length >= chunkSize) {
+      // 处理小说数据
+      console.log(novel);
+      novel = '';
+    }
+  }
+}
+```
+
 ## turborepo 和 monorepo有啥区别？
 
 turborepo 和 monorepo 是两个相关但不同的概念。以下是它们的区别：
@@ -214,6 +616,32 @@ console.log(weakSet.has(obj)); // 输出: false
 WeakMap 用于存储键值对，键是对象，值可以是任何类型。
 WeakSet 用于存储对象集合，元素为对象。
 由于弱引用的特性，WeakMap 和 WeakSet 可以有效地避免内存泄漏，特别是在处理大量对象时。
+
+## `pnpm import` 转换npm/yarn的lock文件为pnpm的lock文件 git 切换分支
+
+`git push --set-upstream origin fix-apple-20240831` 新建分支并推送远程仓库（远程仓库没有）
+
+
+切换到远程的分支，并更新：
+```shell
+zhangwenzhi@zhangwezhideMBP dependency-parse-react % git checkout fix-lenovo-20240620
+切换到分支 'fix-lenovo-20240620'
+zhangwenzhi@zhangwezhideMBP dependency-parse-react % git pull
+当前分支没有跟踪信息。
+请指定您要合并哪一个分支。
+详见 git-pull(1)。
+
+    git pull <远程> <分支>
+
+如果您想要为此分支创建跟踪信息，您可以执行：
+
+    git branch --set-upstream-to=origin/<分支> fix-lenovo-20240620
+
+zhangwenzhi@zhangwezhideMBP dependency-parse-react % git branch --set-upstream-to=origin/fix-lenovo-20240620 fix-lenovo-20240620
+分支 'fix-lenovo-20240620' 设置为跟踪 'origin/fix-lenovo-20240620'。
+zhangwenzhi@zhangwezhideMBP dependency-parse-react % git pull
+```
+
 
 ## 微前端：qiankun+vite+monorepo+vite-plugin-qiankun+pnpm-workspace
 
