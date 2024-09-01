@@ -1,3 +1,203 @@
+## https://github.com/Neonuu/spring-cloud-alibaba
+
+## jmeter+sentinel 流量控制 限流测试
+
+## sentinel java -jar xxx.jar 端口默认8080
+
+下载jar包
+https://github.com/alibaba/Sentinel/releases
+
+2022.0.0.0-RC1对应1.8.6
+```shell
+<!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies -->
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+    <version>2022.0.0.0-RC1</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+```
+
+2023.0.1.2对应1.8.8 ? Jul 12, 2024 spring boot 3.3.3
+```shell
+<!-- https://mvnrepository.com/artifact/com.alibaba.cloud/spring-cloud-alibaba-dependencies -->
+<dependency>
+    <groupId>com.alibaba.cloud</groupId>
+    <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+    <version>2023.0.1.2</version>
+    <type>pom</type>
+</dependency>
+
+```
+
+## settings.xml idea 配置
+
+```shell
+/Users/zhangwenzhi/WenzhiInstalledSoft/apache-maven-3.8.3
+/Users/zhangwenzhi/WenzhiInstalledSoft/apache-maven-3.8.3/conf/settings.xml
+/Users/zhangwenzhi/WenzhiInstalledSoft/MavenDownload/respository
+```
+
+
+## nacos 启动 MacOS
+
+https://developer.aliyun.com/article/1498873
+
+```shell
+### The default token(Base64 String):
+nacos.core.auth.default.token.secret.key=VGhpc0lzTXlDdXN0b21TZWNyZXRLZXkwMTIzNDU2Nzg=
+
+### 2.1.0 版本后
+nacos.core.auth.plugin.nacos.token.secret.key=VGhpc0lzTXlDdXN0b21TZWNyZXRLZXkwMTIzNDU2Nzg=
+```
+
+```shell
+# 2.4.1 版本 运行不起来，要用2.4.0.1版本，这两个版本下载都还比较快，2.2.1等版本的，简直了，可以说慢得直接放弃
+cd  nacos/bin
+sh startup.sh -m standalone
+# 进入可视化页面，账号密码都是nacos，进行登录即可，nacos的端口为8848
+# （如果想要关闭nacos，输入 sh shutdown.sh   但发现关闭后，仍然能在可视化页面连接nacos，所以需要杀死8848端口的进程,可以输入 lsof-i:8848       kill -9 进程号）
+# 使用tail -f start.out 查看日志，如果看到如下日志，说明服务启动成功。
+tail -f start.out
+localhost:8848/nacos
+http://127.0.0.1:8848/nacos
+sh shutdown.sh
+lsof -i:8848 
+kill -9 进程号
+```
+
+```shell
+21:14:36.609 [restartedMain] ERROR org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter -- 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+No spring.config.import property has been defined
+
+Action:
+
+Add a spring.config.import=nacos: property to your configuration.
+	If configuration is not required add spring.config.import=optional:nacos: instead.
+	To disable this check, set spring.cloud.nacos.config.import-check.enabled=false.
+```
+
+配置文件里，需要配置
+```yml
+  config:
+    import: nacos:order-service-dev.yml
+```
+
+如果你不确定 Nacos 配置是否存在，或者希望在 Nacos 配置不存在时应用仍能启动，可以使用 optional: 前缀：
+```yml
+spring:
+  config:
+    import: optional:nacos:
+
+```
+
+如果你不希望进行导入检查，可以设置 spring.cloud.nacos.config.import-check.enabled=false：
+```yml
+spring:
+  cloud:
+    nacos:
+      config:
+        import-check:
+          enabled: false
+
+```
+
+以下是一个完整的 application.yml 示例，包含了 spring.config.import 属性的添加：
+```yml
+server:
+  port: 9080
+
+spring:
+  application:
+    name: order-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  config:
+    import: nacos:
+
+```
+
+或者，如果你选择禁用导入检查：
+```yml
+server:
+  port: 9080
+
+spring:
+  application:
+    name: order-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        import-check:
+          enabled: false
+
+```
+
+
+
+```shell
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+No spring.config.import property has been defined
+
+Action:
+
+Add a spring.config.import=nacos: property to your configuration.
+	If configuration is not required add spring.config.import=optional:nacos: instead.
+	To disable this check, set spring.cloud.nacos.config.import-check.enabled=false.
+
+```
+
+`空格也会影响启动`
+可以：
+```shell
+  config:
+    import:
+      nacos:point-service-dev.yml
+```
+
+`有空格，报错`
+```shell
+  config:
+    import:
+      nacos: point-service-dev.yml
+```
+
+## 阿里Nacos下载、安装 [使用克隆再编译->不行报错，最终还是通过zip包下载] MacOS 
+
+https://blog.csdn.net/Aaaaaaatwl/article/details/140091243
+
+git clone -b master http://gitslab.yiqing.com/declare/about.git
+
+```shell
+# 新打开终端，再敲mvn -v，发现又报：zsh: command not found: mvn。重新敲source ~/.bash_profile后，恢复正常。
+source ~/.bash_profile // vim ~/.zshrc // 文件末尾追加如下内容: source ~/.bash_profile
+
+mvn -v
+```
+
+mvn -Prelease-nacos -Dmaven.test.skip=true clean install -U  
+
+## Github加速访问教程 windows居多
+
+https://zhuanlan.zhihu.com/p/364453651
+
 ## spring boot
 
 - [Spring Boot 官方文档](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)

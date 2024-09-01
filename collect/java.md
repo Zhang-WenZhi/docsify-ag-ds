@@ -1,5 +1,139 @@
 # Java 八股文面试收集
 
+## 怎么防止超卖问题？
+
+超卖是指在高并发环境下，由于多个线程同时读取和更新库存数据，导致库存数量被错误地减少，从而出现库存不足的情况。为了防止超卖问题，可以采用以下几种方法：
+
+1. **乐观锁**：在更新库存时，使用乐观锁机制。首先读取库存数量，然后在更新时检查库存数量是否与读取时一致，如果一致则更新库存数量，否则放弃更新。Java中的乐观锁可以通过synchronized关键字或使用原子类（如AtomicInteger）来实现。
+
+```shell
+select version from goods WHERE id= 1001;
+
+update goods set num = num - 1, version = version + 1 WHERE id= 1001 AND num > 0 AND version = @version(上面查到的version);
+```
+
+2. **悲观锁**：在更新库存时，使用悲观锁机制。首先锁定库存数据，然后更新库存数量，最后释放锁。Java中的悲观锁可以通过synchronized关键字或使用显式锁（如ReentrantLock）来实现。
+
+一般提前采用 select for update，提前加上写锁：
+```java
+beginTranse(开启事务)
+ 
+try{
+ 
+    query('select amount from s_store where goodID = 12345   for update');
+ 
+    if(库存 > 0){
+ 
+        //quantity为请求减掉的库存数量
+ 
+        query('update s_store set amount = amount - quantity where goodID = 12345');
+ 
+    }
+ 
+}catch( Exception e ){
+ 
+    rollBack(回滚)
+ 
+}
+ 
+commit(提交事务)
+
+```
+
+行锁：分为 共享锁 和 排它锁。
+**共享锁又称：**读锁。当一个事务对某几行上读锁时，允许其他事务对这几行进行读操作，但不允许其进行写操作，也不允许其他事务给这几行上排它锁，但允许上读锁。
+上共享锁的写法：lock in share mode
+```shell
+例如： select math from zje where math>60 lock in share mode；
+```
+**排它锁又称：**写锁。当一个事务对某几个上写锁时，不允许其他事务写，但允许读。更不允许其他事务给这几行上任何锁。包括写锁。
+上排它锁的写法：for update
+```shell
+例如：select math from zje where math >60 for update；
+```
+
+行锁的要点
+注意几点：
+
+1.行锁必须有索引才能实现，否则会自动锁全表，那么就不是行锁了。
+
+2.两个事务不能锁同一个索引，例如：
+```shell
+事务A先执行：
+select math from zje where math>60 for update;
+ 
+事务B再执行：
+select math from zje where math<60 for update；
+这样的话，事务B是会阻塞的。如果事务B把 math索引换成其他索引就不会阻塞，
+但注意，换成其他索引锁住的行不能和math索引锁住的行有重复。
+
+```
+3.insert ，delete ， update在事务中都会自动默认加上排它锁。
+```shell
+会话1：
+begin；
+select math from zje where math>60 for update；
+
+会话2：
+begin；
+update zje set math=99 where math=68；
+阻塞
+```
+
+需要注意的是，FOR UPDATE 生效需要同时满足两个条件时才生效：
+
+ 数据库的引擎为 innoDB
+
+ 操作位于事务块中（BEGIN/COMMIT）
+
+3. **数据库唯一索引**：在数据库中为库存数量字段添加唯一索引，确保在并发更新时，只有一个线程能够成功更新库存数量。这种方法依赖于数据库的并发控制机制，但可能对性能有一定影响。
+
+4. **分布式锁**：在高并发环境下，可以使用分布式锁来保证库存数量的更新操作是原子性的。例如，可以使用Redis的SETNX命令来实现分布式锁，确保只有一个线程能够更新库存数量。
+
+redis 分布式锁
+```shell
+$expire = 10;//有效期10秒
+$key = 'lock';//key
+$value = time() + $expire;//锁的值 = Unix时间戳 + 锁的有效期
+$lock = $redis->setnx($key, $value);
+//判断是否上锁成功，成功则执行下步操作
+if(!empty($lock))
+{
+//下单逻辑...
+}
+```
+
+redis的lua脚本
+```lua
+-- KEYS[1]：库存key
+-- KEYS[2]：销量key
+-- ARGV[1]：减去的数量
+
+
+-- 库存是否充足
+if tonumber(redis.call('get', KEYS[1])) > tonumber(ARGV[1]) then
+    -- 扣减库存
+    redis.call('decrby', KEYS[1], ARGV[1]);
+    -- 增加销量
+    redis.call('incrby', KEYS[2], ARGV[1]);
+    return 1;
+else
+    return 0;
+end;
+
+```
+
+
+5. **队列**：将库存更新操作放入队列中，按照顺序依次处理。这样可以避免多个线程同时更新库存，但可能会增加系统的延迟。
+
+在实际应用中，可以根据具体情况选择合适的方法来防止超卖问题。需要注意的是，无论采用哪种方法，都需要考虑系统的性能和可扩展性。
+
+利用 redis 的单线程预减库存。比如商品有 100 件。那么我在 redis 存储一个 k,v。例如
+
+每一个用户线程进来，key 值就减 1，等减到 0 的时候，全部拒绝剩下的请求。
+
+那么也就是只有 100 个线程会进入到后续操作。所以一定不会出现超卖的现象。
+
 ## java nio包
 
 在Java中，java.nio（New Input/Output）包提供了一种与传统的java.io包不同的I/O处理方式。java.nio包引入了缓冲区（Buffer）、通道（Channel）和选择器（Selector）等概念，使得I/O操作更加高效和灵活。
