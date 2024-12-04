@@ -37,4 +37,5 @@
   - [牛客网JAVA](collect/nowcoder.md)
   - [前端](collect/front-end.md)
   - [后端](collect/back-end.md)
+  - [java-20241205](collect/java-20241205.md)
   - [其他](collect/other.md)
