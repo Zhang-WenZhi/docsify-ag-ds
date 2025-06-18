@@ -9,6 +9,7 @@
     - [rspress](rspress/guide.md)
     - [docusaurus](docusaurus/guide.md)
     - [mkdocs](mkdocs/guide.md)
+    - [jekyllrb](jekyllrb/guide.md)
 
 - 数据结构
 
@@ -40,3 +41,9 @@
   - [java-20241205](collect/java-20241205.md)
   - [java-20241214](collect/java-20241214.md)
   - [其他](collect/other.md)
+
+- 按日期收集
+ 
+  - [js-20250420.md](collect/js-20250420.md)
+  - [java-20250419.md](collect/java-20250419.md)
+  - [lang_20250619.md](collect/lang_20250619.md)
