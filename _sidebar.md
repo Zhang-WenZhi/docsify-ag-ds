@@ -5,11 +5,13 @@
 * [概览介绍](/)
 - 网站生成器库
     - [docsify](docsify/guide.md)
-    - [VitePress](vite-press/guide.md)
-    - [rspress](rspress/guide.md)
+    - [vite+VitePress](vite-press/guide.md)
+    - [rust+rspress](rspress/guide.md)
     - [docusaurus](docusaurus/guide.md)
-    - [mkdocs](mkdocs/guide.md)
-    - [jekyllrb](jekyllrb/guide.md)
+    - [python+mkdocs](mkdocs/guide.md)
+    - [ruby+jekyllrb](jekyllrb/guide.md)
+    - [react+gatsby](gatsby/guide.md)
+    - [TS+astro](astro/guide.md)
 
 - 数据结构
 
